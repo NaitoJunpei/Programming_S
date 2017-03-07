@@ -305,7 +305,7 @@ function OS( spike_time ){
 	
     for(var i=0;i<spike_num-2;i++){
         var interval= new Array(2);
-p	interval[0]=spike_time[i+1]-spike_time[i];
+	interval[0]=spike_time[i+1]-spike_time[i];
 	interval[1]=spike_time[i+2]-spike_time[i+1];
         
 	if( (interval[0]+interval[1])!=0 ) lv+=3*Math.pow(interval[0]-interval[1],2.0)/Math.pow(interval[0]+interval[1],2.0)/(spike_num-2);
