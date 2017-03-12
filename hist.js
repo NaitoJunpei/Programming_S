@@ -9,7 +9,7 @@ var Alpha = new Array(3), Beta = new Array(3), Theta = new Array(3);
 var Amp = new Array(3);
 var SpikeData = new Array(3);
 
-
+//test
 function GenerateRandomSpikes( ) {
     /* CHALLENGEの方法を使って作ったランダムなスパイク列を’’’文字列で’’’返す */
     MT = new MersenneTwister(); //乱数を作る
