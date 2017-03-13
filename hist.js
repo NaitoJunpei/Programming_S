@@ -9,7 +9,6 @@ var Alpha = new Array(3), Beta = new Array(3), Theta = new Array(3);
 var Amp = new Array(3);
 var SpikeData = new Array(3);
 
-//test
 function GenerateRandomSpikes( ) {
     /* CHALLENGEの方法を使って作ったランダムなスパイク列を’’’文字列で’’’返す */
     MT = new MersenneTwister(); //乱数を作る
@@ -23,7 +22,7 @@ function GenerateRandomSpikes( ) {
     }
     
     var kappa = new Array(3)
-    kappa[0] = 5.0; kappa[1] = 1.0; kappa[2] = 0.8;
+    kappa[0] = 5.0; kappa[1] = 2.0; kappa[2] = 0.8;
 
     
     for (var i = 0; i < 3; i++) {
@@ -140,6 +139,7 @@ function ResetData(){
     //document.data.spikes.value="0.012 0.050 0.066 0.078 0.113 0.145 0.159 0.188 0.206 0.226 0.261 0.280 0.294 0.305 0.330 0.349 0.368 0.412 0.448 0.477 0.512 0.524 0.529 0.547 0.565 0.588 0.595 0.607 0.619 0.645 0.664 0.685 0.699 0.721 0.737 0.766 0.779 0.814 0.830 0.842 0.872 0.883 0.892 0.903 0.917 0.935 0.959 0.974 0.981 0.995 1.017 1.052 1.067 1.094 1.108 1.124 1.139 1.164 1.183 1.201 1.216 1.234 1.256 1.272 1.291 1.311 1.319 1.344 1.395 1.419 1.436 1.475 1.484 1.527 1.551 1.597 1.614 1.642 1.664 1.725 1.755 1.815 1.854 1.925 1.988 2.127 2.323 2.372 2.515 2.589 2.616 2.713 2.765 2.808 2.837 2.895 2.925 2.943 2.973 3.008 3.040 3.073 3.132 3.145 3.165 3.175 3.195 3.219 3.236 3.256 3.273 3.296 3.301 3.317 3.329 3.335 3.350 3.359 3.376 3.390 3.412 3.439";
     
     document.data.spikes.value = GenerateRandomSpikes();
+    Main();
     return 0;
 }
 
@@ -147,7 +147,7 @@ function Main(){
     
     var spike_time;
     var optimal_binsize_p,optimal_binsize_g;
-    
+
     spike_time = new Array();
     PostData(spike_time);
     SpikeRaster(spike_time);

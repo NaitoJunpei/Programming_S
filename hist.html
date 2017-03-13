@@ -11,7 +11,7 @@
 	<title>Histogram Optimization</title>
 </HEAD>
 
-<BODY onLoad="ResetData()" style="font-family:Optima,Arial"> 
+<BODY onLoad="ResetData()" style="font-family:Optima,Arial">
 
 <div style="width:920">
 		
@@ -28,20 +28,19 @@
 	<FORM name="data">
 		<font face="Arial Black" size=3><strong>1. Copy-and-paste spike times.</strong></font>&nbsp;&nbsp;
 		<INPUT type="button" value="Reset Data" onclick="ResetData()"><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="7" cols="95" font="3"></TEXTAREA><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="7" cols="95" font="3" onChange="Main()"></TEXTAREA><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;(Please list them in increasing order, separated by a comma or a space.)<br><br>
 		
 		<font face="Arial Black" size=3><strong>2. Obtain the optimal bin-size.</strong></font>&nbsp;&nbsp;
 		<INPUT type="button" value="Optimize time histogram" onclick="Main()">
 		<p id="optimal" style="font-size:14pt"></p>
-		<canvas id="raster" width="800" height="70"></canvas><br>
 		<canvas id="graph" width="800" height="200"></canvas><br>
+		<canvas id="raster" width="800" height="70"></canvas><br>
 		<p id="poisson" style="font-size:14pt"></p><br>
 		
 		<font face="Arial Black" size=3><strong>3. Output data sheet.</strong></font>&nbsp;&nbsp;
 		<INPUT type="button" value="Click" onclick="OutputResults()"><br>
 	</FORM>
-	
 	<HR width="920" align="left">
 	
 	
