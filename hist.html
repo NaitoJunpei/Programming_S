@@ -11,7 +11,7 @@
 	<title>Histogram Optimization</title>
 </HEAD>
 
-<BODY onLoad="ResetData()" style="font-family:Optima,Arial">
+<BODY onLoad="Initialize()" style="font-family:Optima,Arial">
 
 <div style="width:920">
 		
@@ -34,8 +34,10 @@
 		<font face="Arial Black" size=3><strong>2. Obtain the optimal bin-size.</strong></font>&nbsp;&nbsp;
 		<INPUT type="button" value="Optimize time histogram" onclick="Main()">
 		<p id="optimal" style="font-size:14pt"></p>
-		<canvas id="graph" width="800" height="200"></canvas><br>
-		<canvas id="raster" width="800" height="70"></canvas><br>
+		<canvas id="graph_SS" width="800" height="200"></canvas><br>
+		<p id="optimal_SS" style="font-size:14pt"></p>
+		<canvas id="graph_OS" width="800" height="200"></canvas><br>
+		<p id="optimal_OS" style="font-size:14pt"></p>
 		<p id="poisson" style="font-size:14pt"></p><br>
 		
 		<font face="Arial Black" size=3><strong>3. Output data sheet.</strong></font>&nbsp;&nbsp;
