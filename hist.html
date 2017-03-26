@@ -8,6 +8,14 @@
 <META http-equiv="Content-Style-Type" content="text/css">
 	<script type="text/javascript" src="mt.js"></script>
 	<script type="text/javascript" src="hist.js"></script>
+	<script type="text/javascript">
+	  if (window.File && window.FileReader && window.FileList && window.Blob) {
+	  // Great success! All the File APIs are supported.
+	  } else {
+	    alert('The File APIs are not fully supported in this browser.');
+	  }
+	</script>
+	
 	<title>Histogram Optimization</title>
 </HEAD>
 
@@ -17,8 +25,8 @@
 		
 		
 	<!-- Header --> 
-	<h2>SULAB: Optimizing time histograms for non-Poissonian spike trains.</h2>
-[version 1.2 April. 2-nd, 2012] 編集テストだよThis is a test. This program was created by <a href="http://ton.scphys.kyoto-u.ac.jp/~omi/">Takahiro Omi</a> in collaboration with <a href="http://ton.scphys.kyoto-u.ac.jp/~shino/english.html">Shigeru Shinomoto</a> based on the theory published in T. Omi and S. Shinomoto, "Optimizing time histograms for non-Poissonian spike trains", Neural Computation (2012) [<a href="http://www.ton.scphys.kyoto-u.ac.jp/~omi/paper/Omi_NECO2011.pdf">PDF</a>].
+	<h2>Toolbox: Estimating the firing rate</h2>
+
 		
 	<HR width="920" align="left">
 	
@@ -26,40 +34,59 @@
 	<!-- Web Application --> 
 	<h3>[Web Application]</h3>
 	<FORM name="data">
-		<font face="Arial Black" size=3><strong>1. Copy-and-paste spike times.</strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value="Reset Data" onclick="ResetData()"><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="7" cols="95" font="3" onChange="Main()"></TEXTAREA><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;(Please list them in increasing order, separated by a comma or a space.)<br><br>
+		<font face="Arial Black" size=3><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
+		<INPUT type="button" value=" or, replace it with another sample." onclick="ResetData()"> or, upload your data <INPUT type="file" id="selfile"><br>
+		<script type="text/javascript">
+		  function handleFileSelect(evt) {
+		    var file = evt.target.files;
+		    console.log(file);
+		    console.log(file[0].name + "を取得しました");
+		    var reader = new FileReader();
+		    reader.readAsText(file[0]);
+		    reader.onload = function(ev) {
+		      document.data.spikes.value = reader.result;
+		      console.log(reader.result);
+		      Main();
+		    }
+		  }
+		  document.getElementById('selfile').addEventListener('change', handleFileSelect, false);
+		</script>
 		
-		<font face="Arial Black" size=3><strong>2. Obtain the optimal bin-size.</strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value="Optimize time histogram" onclick="Main()">
+		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="7" cols="95" font="3" onChange="Main()"></TEXTAREA><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;Please list spike times in increasing order, separated by a comma or a space.<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;Your data would not leak out, because the computation is carried out by your computer.<br><br>
+		
+		<font face="Arial Black" size=3><strong>2.</strong></font>
+		<INPUT type="button" value="Estimate the firing rate" onclick="Main()">
 		<p id="optimal" style="font-size:14pt"></p>
-		<canvas id="graph_SS" width="800" height="200"></canvas><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization (Shimazaki and Shinomoto [1])<br>
+		<canvas id="graph_SS" width="800" height="160"></canvas><br>
+		<canvas id="raster" width="800" height="40"></canvas><br>
 		<p id="optimal_SS" style="font-size:14pt"></p>
-		<canvas id="graph_OS" width="800" height="200"></canvas><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains (Omi and Shinomoto [2])<br>
+		<canvas id="graph_OS" width="800" height="160"></canvas><br>
+		<canvas id="raster2" width="800" height="40"></canvas><br>
 		<p id="optimal_OS" style="font-size:14pt"></p>
 		<p id="poisson" style="font-size:14pt"></p><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization (Shimazaki and Shinomoto [3])<br>
+		<canvas id = "ShimazakiKernel" width="800" height="300"></canvas><br>
+		<canvas id = "raster3" width="800" height="40"></canvas><br>
+		<p id="optimal_ShimazakiKernel" style="font-size:14pt"></p><br>
+		<canvas id = "ShimazakiKernel2" width="800" height="300"></canvas><br>
+		<canvas id = "raster4" width="800" height="40"></canvas><br>
+		<p id="optimal_ShimazakiKernel2" style="font-size:14pt"></p><br>
 		
-		<font face="Arial Black" size=3><strong>3. Output data sheet.</strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value="Click" onclick="OutputResults()"><br>
 	</FORM>
 	<HR width="920" align="left">
 	
 	
 	<!-- Formula --> 
-	<h3>[Coupmtatinal Step]</h3>
-	&nbsp;&nbsp;&nbsp;&nbsp;<img src="formula.jpg" width=500 border="1"><br>
-	&nbsp;&nbsp;&nbsp;&nbsp;<strong>[Note]</strong> The Poissonian optimiztion method is obtained by simply replacing step 2 with F=1.<br><br>
-<BR>
-	<strong>Matlab code: <A href="hist_np.m">hist_np.m</A><BR>
-</strong><br>
-	<strong>Reference:</strong> T. Omi and S. Shinomoto, "Optimizing time histograms for non-Poissonian spike trains", Neural Computation 23, 3125 (2011) [<a href="http://www.ton.scphys.kyoto-u.ac.jp/~omi/paper/Omi_NECO2011.pdf">PDF</a>].<br>
 	
-	<HR width="920" align="left"><br><br>
-	
-	<!-- Contact --><FONT size="-1">If you have any questions, or have suggestions for improving the programs, please contact <A href="http://ton.scphys.kyoto-u.ac.jp/~shino/english.html">Shigeru Shinomoto</A>, who is conducting these studies.</FONT><BR>
-<FONT color="#000000" size="2" face="Arial"><A href="http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/english.htm" target="_top"><FONT color="#ff00ff"><FONT color="#ff00ff">Toolbox for analyzing spike data, SULAB</FONT></FONT></A></FONT><FONT size=2>&nbsp;</FONT><span lang=EN-US style='font-family:
-Arial'></span></div>
+	<!-- Contact --><FONT size="-1">[1] Shimazaki H and Shinomoto S (2007) A method for selecting the bin size of a time histogram. Neural Computation 19:1503-1700.<br>
+[2] Omi T and Shinomoto S (2011) Optimizing time histograms for non-Poissonian spike trains. Neural Computation 23:3125-3144.<br>
+[3] Shimazaki H and Shinomoto S (2010) Kernel bandwidth optimization in spike rate estimation. J. Computational Neuroscience 29:171-182.<br>
+	  </FONT><BR>
+</div>
 </BODY>
 
 </html> 
