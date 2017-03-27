@@ -282,7 +282,7 @@ function SpikeRaster(spike_time, canvas_id){
 
 }
 
-function DrawHist( spike_time, optimal_binsize, canvas_id ) {
+function DrawHist( spike_time, optimal_binsize, canvas_id, color ) {
     var spike_num = spike_time.length;
     var onset = spike_time[0] - 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
     var offset = spike_time[spike_num - 1] + 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
@@ -311,15 +311,21 @@ function DrawHist( spike_time, optimal_binsize, canvas_id ) {
 	var xx = x_base + width * x;
 	var yy = height_hist * y;
 
-	ctx.fillStyle="blue";
-	if (onset + (i + 1) * optimal_binsize < offset) ctx.fillRect(xx, y_graph, width * optimal_binsize / (offset - onset), -yy);
-	else ctx.fillRect(xx, y_graph, width - width * x, -height_hist * y);
+	ctx.fillStyle= color;
+	if (onset + (i + 1) * optimal_binsize < offset) {
+	    ctx.fillRect(xx, y_graph, width * optimal_binsize / (offset - onset), -yy);
+	    ctx.strokeRect(xx, y_graph, width * optimal_binsize / (offset - onset), -yy);
+	}
+	else {
+	    ctx.fillRect(xx, y_graph, width - width * x, -height_hist * y);
+	    ctx.strokeRect(xx, y_graph, width - width * x, -height_hist * y);
+	}
     }
 }
 
 function DrawGraphSS( spike_time, optimal_binsize ){
 	
-    DrawHist(spike_time, optimal_binsize, "graph_SS");
+    DrawHist(spike_time, optimal_binsize, "graph_SS", "lightskyblue");
     SpikeRaster(spike_time, "raster");
 
     //ctx.font = "12px 'Arial'";
@@ -345,7 +351,7 @@ function DrawGraphSS( spike_time, optimal_binsize ){
 }
 
 function DrawGraphOS(spike_time, optimal_binsize) {
-    DrawHist(spike_time, optimal_binsize, "graph_OS");
+    DrawHist(spike_time, optimal_binsize, "graph_OS", "aquamarine");
     SpikeRaster(spike_time, "raster2");
 
     /* output */
@@ -517,17 +523,20 @@ function density(spike_time, canvas_id) {
     var canvas = document.getElementById(canvas_id);
     if (canvas.getContext) {
 	var ctx = canvas.getContext("2d");
-	ctx.clearRect(0, 0, 800, 300);
+	ctx.clearRect(0, 0, 800, y_graph);
 	ctx.beginPath();
-	ctx.moveTo(x_base, 300);
+	ctx.moveTo(x_base, y_graph);
 	for (var i = 0; i < K; i++) {
 	    PointX = Math.round(i * width / (K - 1) + x_base);
-	    PointY = 300 - Math.round(300 * opty[i] / (1.2 * Math.max.apply(null, opty)));
+	    PointY = y_graph - Math.round(y_graph * opty[i] / (1.2 * Math.max.apply(null, opty)));
 	    ctx.lineTo(PointX, PointY);
 	}
-	ctx.lineTo(width + x_base, 300)
+	ctx.lineTo(width + x_base, y_graph)
 	ctx.fillStyle = "rgb(255, 165, 0)";
 	ctx.fill();
+	ctx.strokeStyle = "brack";
+	ctx.strokeRect(x_base, y_graph, width, -height_graph);
+
 	ctx.stroke();
 
     }
@@ -542,18 +551,21 @@ function density2(spike_time, canvas_id) {
     var canvas = document.getElementById(canvas_id);
     if (canvas.getContext) {
 	var ctx = canvas.getContext("2d");
-	ctx.clearRect(0, 0, 800, 300);
+	ctx.clearRect(0, 0, 800, y_graph);
 	ctx.beginPath();
-	ctx.moveTo(x_base, 300);
+	ctx.moveTo(x_base, y_graph);
 	for (var i = 0; i < K; i++) {
 	    PointX = Math.round(i * width / (K - 1) + x_base);
-	    PointY = 300 - Math.round(300 * opty[i] / (1.2 * Math.max.apply(null, opty)));
+	    PointY = y_graph - Math.round(y_graph * opty[i] / (1.2 * Math.max.apply(null, opty)));
 	    ctx.lineTo(PointX, PointY);
 	}
-	ctx.lineTo(width + x_base, 300)
-	ctx.fillStyle = "rgb(255, 165, 0)";
+	ctx.lineTo(width + x_base, y_graph)
+	ctx.fillStyle = "mediumaquamarine";
 	ctx.fill();
 	ctx.stroke();
+	ctx.strokeStyle = "brack";
+	ctx.strokeRect(x_base, y_graph, width, -height_graph);
+
 
     }
     SpikeRaster(spike_time, "raster4");
@@ -593,7 +605,9 @@ function kernel2(spike_time, w) {
     for (var i = 0; i < K; i++) {
 	y[i] = 0;
 	for (var j = 0; j < spike_time.length; j++) {
-	    y[i] = y[i] + Gauss(x[i] - spike_time[j], w) / spike_time.length + Gauss(2 * DATA_MAX - (x[i] - spike_time[j]), w) / spike_time.length + Gauss(2 * DATA_MIN - (x[i] - spike_time[j]), w) / spike_time.length;
+	    y[i] = y[i] + Gauss(x[i] - spike_time[j], w) / spike_time.length
+		+ Gauss(x[i] - (2 * DATA_MAX - spike_time[j]), w) / spike_time.length
+		+ Gauss(x[i] - (2 * DATA_MIN - spike_time[j]), w) / spike_time.length;
 	}
     }
     

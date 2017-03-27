@@ -52,29 +52,26 @@
 		  document.getElementById('selfile').addEventListener('change', handleFileSelect, false);
 		</script>
 		
-		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="7" cols="95" font="3" onChange="Main()"></TEXTAREA><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="3" cols="95" font="3" style="font-size:10pt" onChange="Main()"></TEXTAREA><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Please list spike times in increasing order, separated by a comma or a space.<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Your data would not leak out, because the computation is carried out by your computer.<br><br>
 		
-		<font face="Arial Black" size=3><strong>2.</strong></font>
-		<INPUT type="button" value="Estimate the firing rate" onclick="Main()">
-		<p id="optimal" style="font-size:14pt"></p>
+		<font face="Arial Black" size=3><strong>2.Estimate the firing rate</strong></font><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization (Shimazaki and Shinomoto [1])<br>
-		<canvas id="graph_SS" width="800" height="160"></canvas><br>
+		<canvas id="graph_SS" width="800" height="140"></canvas>
 		<canvas id="raster" width="800" height="40"></canvas><br>
-		<p id="optimal_SS" style="font-size:14pt"></p>
+		<p id="optimal_SS" style="font-size:12pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains (Omi and Shinomoto [2])<br>
-		<canvas id="graph_OS" width="800" height="160"></canvas><br>
+		<canvas id="graph_OS" width="800" height="140"></canvas><br>
 		<canvas id="raster2" width="800" height="40"></canvas><br>
-		<p id="optimal_OS" style="font-size:14pt"></p>
-		<p id="poisson" style="font-size:14pt"></p><br>
+		<p id="optimal_OS" style="font-size:12pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization (Shimazaki and Shinomoto [3])<br>
-		<canvas id = "ShimazakiKernel" width="800" height="300"></canvas><br>
+		<canvas id = "ShimazakiKernel" width="800" height="140"></canvas><br>
 		<canvas id = "raster3" width="800" height="40"></canvas><br>
-		<p id="optimal_ShimazakiKernel" style="font-size:14pt"></p><br>
-		<canvas id = "ShimazakiKernel2" width="800" height="300"></canvas><br>
+		<p id="optimal_ShimazakiKernel" style="font-size:12pt"></p>
+		<canvas id = "ShimazakiKernel2" width="800" height="140"></canvas><br>
 		<canvas id = "raster4" width="800" height="40"></canvas><br>
-		<p id="optimal_ShimazakiKernel2" style="font-size:14pt"></p><br>
+		<p id="optimal_ShimazakiKernel2" style="font-size:12pt"></p>
 		
 	</FORM>
 	<HR width="920" align="left">
