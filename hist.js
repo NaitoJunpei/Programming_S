@@ -245,11 +245,11 @@ function Estimate_Rate( spike_time, optimal_binsize, optimal_rate ){
 ///////////////////////////////////////////////
 var x_base=40;
 var width=600;
-var y_raster=40;
-var height_spike=30;
-var y_graph=140;
-var height_graph=130;
-var height_hist=120;
+var y_raster=10;
+var height_spike=5;
+var y_graph=70;
+var height_graph=60;
+var height_hist=50;
 
 function SpikeRaster(spike_time, canvas_id){
 
