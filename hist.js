@@ -164,6 +164,12 @@ function Main(){
     //DrawGraph(spike_time,optimal_binsize_g,optimal_binsize_p);
     density(spike_time, "ShimazakiKernel");
     density2(spike_time, "ShimazakiKernel2");
+
+    var bin_width = 0.05; // bin width in second
+    var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
+    DrawGraphHMM(spike_time, rate_hmm);
+    SpikeRaster(spike_time, "raster5");
+    
     /*for output*/
     OUTPUT_binsize_p=optimal_binsize_p;
     OUTPUT_rate_p = new Array(); 
@@ -631,4 +637,41 @@ function Cost(spike_time, w) {
 
 function Gauss(x, w) {
     return 1 / Math.sqrt(2 * Math.PI) / w * Math.exp(- x * x / 2 / w / w);
+}
+
+
+//////Hidden Markov Model//////
+function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
+    var spike_num = spike_time.length;
+    var onset = spike_time[0]              - 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
+    var offset = spike_time[spike_num - 1] + 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
+
+    var optimal_rate_p, optimal_rate_g;
+    var rate_max;
+
+    /* for (var i = 0; i < rate_hmm.length; i++) {
+	if (i == 0 || rate_max < rate_hmm[i][1]) rate_max = rate_hmm[i][1];
+	} */
+    rate_max = Math.max.apply(null, rate_hmm);
+
+    var canvas = document.getElementById("HMM");
+    if (!canvas || !canvas.getContext) { return false;}
+    var ctx = canvas.getContext('2d');
+
+    /* reset canvas */
+    ctx.clearRect(0, 0, 800, 70);
+
+    /* sotowaku */
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(x_base, y_graph, width, -height_graph);
+
+    /* hmm */
+    var gra_binwidth = width / rate_hmm.length;
+    for (var i = 0; i < rate_hmm.length; i++) {
+	ctx.fillStyle = "orange";
+	var x_pos = x_base + i * gra_binwidth;
+	var height = height_hist * rate_hmm[i][1] / rate_max;
+	ctx.fillRect(x_pos, y_graph, gra_binwidth, -height);
+    }
+
 }
