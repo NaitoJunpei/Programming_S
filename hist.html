@@ -1,6 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-
+  <style type="text/css">
+    body,td,th {font-size:10pt}
+  </style>
+  
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
@@ -20,7 +23,7 @@
 </HEAD>
 
 <BODY onLoad="Initialize()" style="font-family:Optima,Arial">
-<basefont size=10>
+
 <div style="width:920">
 		
 		
@@ -29,8 +32,8 @@
 	
 	<!-- Web Application --> 
 	<FORM name="data">
-		<font face="Arial Black" size=2><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value=" or, replace it with another sample," onclick="ResetData()" style="font-size:12pt"> or, upload your data <INPUT type="file" id="selfile"><br>
+		<font face="Arial Black"><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
+		<INPUT type="button" value=" or, replace it with another sample," onclick="ResetData()" style="font-size:10pt"> or, upload your data <INPUT type="file" id="selfile"><br>
 		<script type="text/javascript">
 		  function handleFileSelect(evt) {
 		    var file = evt.target.files;
@@ -51,23 +54,23 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;Please list spike times in increasing order, separated by a comma or a space.<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Your data would not leak out, because the computation is carried out by your computer.<br><br>
 		
-		<font face="Arial Black" size=3><strong>2.Estimate the firing rate</strong></font><br>
+		<font face="Arial Black"><strong>2.Estimate the firing rate</strong></font><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization (Shimazaki and Shinomoto [1])<br>
 		<canvas id="graph_SS" width="800" height="70"></canvas>
 		<canvas id="raster" width="800" height="10"></canvas><br>
-		<p id="optimal_SS" style="font-size:12pt"></p>
+		<p id="optimal_SS" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains (Omi and Shinomoto [2])<br>
 		<canvas id="graph_OS" width="800" height="70"></canvas><br>
 		<canvas id="raster2" width="800" height="10"></canvas><br>
-		<p id="optimal_OS" style="font-size:12pt"></p>
+		<p id="optimal_OS" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization (Shimazaki and Shinomoto [3])<br>
 		<canvas id = "ShimazakiKernel" width="800" height="70"></canvas><br>
 		<canvas id = "raster3" width="800" height="10"></canvas><br>
-		<p id="optimal_ShimazakiKernel" style="font-size:12pt"></p>
+		<p id="optimal_ShimazakiKernel" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(D) Kernel density estimation: L2 risk minimization, reflection boundary.<br>		
 		<canvas id = "ShimazakiKernel2" width="800" height="70"></canvas><br>
 		<canvas id = "raster4" width="800" height="10"></canvas><br>
-		<p id="optimal_ShimazakiKernel2" style="font-size:12pt"></p>
+		<p id="optimal_ShimazakiKernel2" style="font-size:10pt"></p>
 		
 	</FORM>
 	<HR width="920" align="left">
