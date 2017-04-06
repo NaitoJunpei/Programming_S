@@ -23,7 +23,6 @@ function GenerateRandomSpikes( ) {
     
     var kappa = new Array(3)
     kappa[0] = 5.0; kappa[1] = MT.next() * (2.0 - 0.75) + 0.75; kappa[2] = 0.8;
-    console.log(kappa[1]);
     for (var i = 0; i < 3; i++) {
 	SpikeData[i] = new Array();
 	GenerateSpikes(i, kappa[i], SpikeData[i]);
@@ -158,8 +157,10 @@ function Main(){
     
     optimal_binsize_g=OS(spike_time);
     optimal_binsize_p=SS(spike_time);
-    
+
+    console.log(optimal_binsize_p);
     DrawGraphSS(spike_time, optimal_binsize_p);
+    DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "blue");
     DrawGraphOS(spike_time, optimal_binsize_g);
     //DrawGraph(spike_time,optimal_binsize_g,optimal_binsize_p);
     density(spike_time, "ShimazakiKernel");
@@ -287,10 +288,7 @@ var height_hist=50;
 function SpikeRaster(spike_time, div_id) {
     google.charts.setOnLoadCallback(
 	function draw_chart() {
-	    console.log(spike_time.length);
 	    var arr = [['', '']].concat(spike_time.map(function(x) { return [x, 1]}));
-	    console.log(spike_time.length);
-	    console.log(arr);
 	    var data = google.visualization.arrayToDataTable(arr);
 	    var options1 = {
 		legend: 'none',
@@ -357,6 +355,43 @@ function DrawHist( spike_time, optimal_binsize, canvas_id, color ) {
 	    ctx.strokeRect(xx, y_graph, width - width * x, -height_hist * y);
 	}
     }
+}
+
+function DrawHist2(spike_time, optimal_binsize, div_id, color) {
+    google.charts.setOnLoadCallback(
+	function() {
+	    var arr = [['']].concat(spike_time.map(function(x) {return [x]}));//GoogleChartの仕様、最初の要素はラベル名
+	    var data = google.visualization.arrayToDataTable(arr); //データとして利用できる形に変換
+	    var max = Math.max.apply(null, spike_time);
+	    var min = Math.min.apply(null, spike_time);
+	    var onset = min - 0.001 * (max - min);
+	    var options = {
+		legend: 'none', //多分要素の名前とかを出力する設定
+		chartArea: { //グラフの場所とか
+		    left: x_base,
+		    top: 1,
+		    width: width,
+		    height: height_graph,
+		    backgroundColor: { //グラフの範囲を四角で囲む
+			stroke: "black",
+			strokeWidth: 1}},
+		hAxis: { //横軸のいらないものを見えなくする
+		    gridlines: {color: "white"},
+		    baselineColor: "white",
+		    textPosition: "none",
+		    //maxValue: max,
+		    minValue: onset,
+		},
+		vAxis: { //縦軸のいらないものを見えなくする
+		    gridlines: {color: "white"},
+		    baselineColor: "white",
+		    textPosition: "none"},
+		colors: [color], //グラフの色の設定
+		histogram: {bucketSize: optimal_binsize}
+	    }
+	    var chart = new google.visualization.Histogram(document.getElementById(div_id));
+	    chart.draw(data, options);
+	});
 }
 
 function DrawGraphSS( spike_time, optimal_binsize ){
@@ -577,7 +612,6 @@ function density(spike_time, canvas_id) {
 
     }
     SpikeRaster(spike_time, "raster3");
-    console.log(opty);
     document.getElementById('optimal_ShimazakiKernel').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.";
 }
 
@@ -605,8 +639,6 @@ function density2(spike_time, canvas_id) {
 
     }
     SpikeRaster(spike_time, "raster4");
-    console.log(2 * DATA_MAX);
-    console.log(opty);
     document.getElementById('optimal_ShimazakiKernel2').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.";
 }
 
@@ -673,10 +705,6 @@ function Gauss(x, w) {
 //////Hidden Markov Model//////
 function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
     var spike_num = spike_time.length;
-    console.log(spike_num);
-    console.log(rate_hmm);
-    console.log(rate_hmm.map(function(x) { return x[1] }));
-    console.log(width);
     var onset = spike_time[0]              - 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
     var offset = spike_time[spike_num - 1] + 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
 
