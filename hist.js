@@ -154,7 +154,7 @@ function Main(){
 
     spike_time = new Array();
     PostData(spike_time);
-    SpikeRaster(spike_time);
+    //SpikeRaster(spike_time);
     
     optimal_binsize_g=OS(spike_time);
     optimal_binsize_p=SS(spike_time);
@@ -169,7 +169,6 @@ function Main(){
     var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
     DrawGraphHMM(spike_time, rate_hmm);
     SpikeRaster(spike_time, "raster5");
-    SpikeRaster2(spike_time, "google");
     
     /*for output*/
     OUTPUT_binsize_p=optimal_binsize_p;
@@ -258,7 +257,7 @@ var y_graph=70;
 var height_graph=60;
 var height_hist=50;
 
-function SpikeRaster(spike_time, canvas_id){
+/* function SpikeRaster(spike_time, canvas_id){
 
     var spike_num=spike_time.length;
     var onset  = spike_time[0]           - 0.001*(spike_time[spike_num-1]-spike_time[0]);
@@ -268,10 +267,10 @@ function SpikeRaster(spike_time, canvas_id){
     if ( ! canvas || ! canvas.getContext ) {	return false;	}
     var ctx = canvas.getContext('2d');
 	
-    /*reset canvas*/
+    //reset canvas
     ctx.clearRect(0,0,800,y_raster);
     
-    /*raster*/
+    //raster
     ctx.strokeStyle = "black"
     ctx.strokeRect(x_base-10,y_raster, width+20,0);
 	
@@ -281,15 +280,11 @@ function SpikeRaster(spike_time, canvas_id){
 	ctx.strokeRect(x_base+width*x,y_raster,0,-30);
     }
     
-    /*text*/
-    //ctx.font = "16px 'Arial'";
-    //ctx.fillText("Spikes",10,y_raster-10);
-    
     return 0;
 
-}
+} */
 
-function SpikeRaster2(spike_time, div_id) {
+function SpikeRaster(spike_time, div_id) {
     google.charts.setOnLoadCallback(
 	function draw_chart() {
 	    console.log(spike_time.length);
