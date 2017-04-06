@@ -169,6 +169,7 @@ function Main(){
     var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
     DrawGraphHMM(spike_time, rate_hmm);
     SpikeRaster(spike_time, "raster5");
+    SpikeRaster2(spike_time, "google");
     
     /*for output*/
     OUTPUT_binsize_p=optimal_binsize_p;
@@ -286,6 +287,40 @@ function SpikeRaster(spike_time, canvas_id){
     
     return 0;
 
+}
+
+function SpikeRaster2(spike_time, div_id) {
+    google.charts.setOnLoadCallback(
+	function draw_chart() {
+	    console.log(spike_time.length);
+	    var arr = [['', '']].concat(spike_time.map(function(x) { return [x, 1]}));
+	    console.log(spike_time.length);
+	    console.log(arr);
+	    var data = google.visualization.arrayToDataTable(arr);
+	    var options1 = {
+		legend: 'none',
+		bar: {
+		    groupWidth: 2},
+		chartArea: {
+		    left: x_base,
+		    top: 0,
+		    width: width,
+		    height: 8},
+		hAxis: {
+		    gridlines: {color: 'white'},
+		    baselineColor: 'white',
+		    textPosition: 'none'},
+		vAxis: {
+		    gridlines: {color: 'white'},
+		    baselineColor: 'white',
+		    textPosition: 'none',
+		    maxValue: 0.5},
+		colors: ["black"],
+		orientation: 'horizontal',
+		focusTarget: 'none'}
+	    var chart1 = new google.visualization.BarChart(document.getElementById(div_id));
+	    chart1.draw(data, options1);
+	})
 }
 
 function DrawHist( spike_time, optimal_binsize, canvas_id, color ) {
