@@ -643,6 +643,10 @@ function Gauss(x, w) {
 //////Hidden Markov Model//////
 function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
     var spike_num = spike_time.length;
+    console.log(spike_num);
+    console.log(rate_hmm);
+    console.log(rate_hmm.map(function(x) { return x[1] }));
+    console.log(width);
     var onset = spike_time[0]              - 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
     var offset = spike_time[spike_num - 1] + 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
 
@@ -651,8 +655,9 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 
     /* for (var i = 0; i < rate_hmm.length; i++) {
 	if (i == 0 || rate_max < rate_hmm[i][1]) rate_max = rate_hmm[i][1];
-	} */
-    rate_max = Math.max.apply(null, rate_hmm);
+    } */
+    rate_max = Math.max.apply(null, rate_hmm.map(function(x) { return x[1] }));
+    
 
     var canvas = document.getElementById("HMM");
     if (!canvas || !canvas.getContext) { return false;}
@@ -668,10 +673,12 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
     /* hmm */
     var gra_binwidth = width / rate_hmm.length;
     for (var i = 0; i < rate_hmm.length; i++) {
-	ctx.fillStyle = "orange";
+	ctx.fillStyle = "lightsalmon";
 	var x_pos = x_base + i * gra_binwidth;
 	var height = height_hist * rate_hmm[i][1] / rate_max;
 	ctx.fillRect(x_pos, y_graph, gra_binwidth, -height);
+	ctx.strokeStyle = "black";
+	ctx.strokeRect(x_pos, y_graph, gra_binwidth, -height);
     }
 
 }
