@@ -240,7 +240,8 @@ function Estimate_Rate( spike_time, optimal_binsize, optimal_rate ){
     
     var optimal_binnum=Math.ceil((spike_time[spike_num-1]-onset)/optimal_binsize);
     var rate_max;
-    
+    console.log("debag");
+    console.log(optimal_binnum);
     for(var i=0;i<optimal_binnum;i++){  optimal_rate[i]=0;  }
     for(var i=0;i<spike_num;i++){   optimal_rate[Math.floor((spike_time[i]-onset)/optimal_binsize)]+=1.0/optimal_binsize;   }
     for(var i=0;i<optimal_binnum;i++){  if(i==0 || optimal_rate[i]>rate_max ) rate_max=optimal_rate[i];  }
@@ -365,6 +366,13 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 	    var max = Math.max.apply(null, spike_time);
 	    var min = Math.min.apply(null, spike_time);
 	    var onset = min - 0.001 * (max - min);
+	    var optimal_binnum = Math.ceil((max - onset) / optimal_binsize);
+	    console.log(arr);
+	    console.log(onset);
+	    console.log(max);
+	    console.log(optimal_binsize);
+	    console.log(optimal_binnum);
+	   
 	    var options = {
 		legend: 'none', //多分要素の名前とかを出力する設定
 		chartArea: { //グラフの場所とか
@@ -379,15 +387,20 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 		    gridlines: {color: "white"},
 		    baselineColor: "white",
 		    textPosition: "none",
-		    //maxValue: max,
+		    maxValue: max,
 		    minValue: onset,
 		},
 		vAxis: { //縦軸のいらないものを見えなくする
 		    gridlines: {color: "white"},
 		    baselineColor: "white",
-		    textPosition: "none"},
+		    textPosition: "none"
+		},
 		colors: [color], //グラフの色の設定
-		histogram: {bucketSize: optimal_binsize}
+		histogram: {bucketSize: optimal_binsize,
+			    //maxNumBuckets: optimal_binnum,
+			    minNumBuckets: optimal_binnum,
+			    minValue: onset,
+			    maxValue: max}
 	    }
 	    var chart = new google.visualization.Histogram(document.getElementById(div_id));
 	    chart.draw(data, options);
