@@ -160,8 +160,9 @@ function Main(){
 
     console.log(optimal_binsize_p);
     DrawGraphSS(spike_time, optimal_binsize_p);
-    DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "blue");
+    DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "lightskyblue");
     DrawGraphOS(spike_time, optimal_binsize_g);
+    DrawHist2(spike_time, optimal_binsize_g, "graph_OSdiv", "aquamarine");
     //DrawGraph(spike_time,optimal_binsize_g,optimal_binsize_p);
     density(spike_time, "ShimazakiKernel");
     density2(spike_time, "ShimazakiKernel2");
@@ -396,6 +397,7 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 		    textPosition: "none"
 		},
 		colors: [color], //グラフの色の設定
+		bar: {groupWidth: "100%"}, //おまじない
 		histogram: {bucketSize: optimal_binsize,
 			    //maxNumBuckets: optimal_binnum,
 			    minNumBuckets: optimal_binnum,
@@ -624,9 +626,49 @@ function density(spike_time, canvas_id) {
 	ctx.stroke();
 
     }
+    densitydiv(opty, "ShimazakiKernelDiv", "orange");
     SpikeRaster(spike_time, "raster3");
     document.getElementById('optimal_ShimazakiKernel').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.";
 }
+
+function densitydiv(opty, div_id, color) {
+    google.charts.setOnLoadCallback(
+	function() {
+	    var arr = [];
+	    arr[0] = ["", ""];
+	    for (var i = 0; i < K; i++) {
+		arr[i + 1] = [i, opty[i]];
+	    }
+
+	    var data = google.visualization.arrayToDataTable(arr);
+	    var options =
+		{ legend: 'none',
+		  lineWidth: 1,
+		  curveType: 'function',
+		  chartArea: { //グラフの場所とか
+		      left: x_base,
+		      top: 1,
+		      width: width,
+		      height: height_graph,
+		      backgroundColor: { //グラフの範囲を四角で囲む
+			  stroke: "black",
+			  strokeWidth: 1}},
+		  hAxis: {
+		      gridlines: {color: 'white'},
+		      baselineColor: 'white',
+		      textPosition: 'none'},
+		  vAxis: {
+		      gridlines: {color: 'white'},
+		      baselineColor: 'white',
+		      textPosition: 'none'},
+		  colors: [color]
+		}
+	    var chart = new google.visualization.AreaChart(document.getElementById(div_id));
+	    chart.draw(data, options);
+	})
+}
+
+
 
 function density2(spike_time, canvas_id) {
     var optw = SearchMinimum(spike_time);
@@ -651,6 +693,7 @@ function density2(spike_time, canvas_id) {
 
 
     }
+    densitydiv(opty, "ShimazakiKernel2Div", "mediumaquamarine");    
     SpikeRaster(spike_time, "raster4");
     document.getElementById('optimal_ShimazakiKernel2').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.";
 }
@@ -743,6 +786,8 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 
     /* hmm */
     var gra_binwidth = width / rate_hmm.length;
+    console.log("HMM");
+    console.log(rate_hmm);
     for (var i = 0; i < rate_hmm.length; i++) {
 	ctx.fillStyle = "lightsalmon";
 	var x_pos = x_base + i * gra_binwidth;
@@ -751,5 +796,37 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 	ctx.strokeStyle = "black";
 	ctx.strokeRect(x_pos, y_graph, gra_binwidth, -height);
     }
+    drawHMMDiv(rate_hmm, "HMMDiv", "lightsalmon");
 
+}
+
+function drawHMMDiv(rate_hmm, div_id, color) {
+    google.charts.setOnLoadCallback(
+	function() {
+	    var arr = [['', '']].concat(rate_hmm);
+	    var data = google.visualization.arrayToDataTable(arr);
+	    var options = {
+		legend: 'none',
+		bar: {groupWidth: "100%"},
+		chartArea: {
+		    left: x_base,
+		    top: 1,
+		    width: width,
+		    height: height_graph,
+		    backgroundColor: {
+			stroke: "black",
+			strokeWidth: 1}},
+		hAxis: {
+		    gridlines: {color: 'white'},
+		    baselineColor: 'white',
+		    textPosition: 'none'},
+		vAxis: {
+		    gridlines: {color: 'white'},
+		    baselineColor: 'white',
+		    textPosition: 'none'},
+		orientation: 'horizontal',
+		colors: [color]}
+	    var chart = new google.visualization.BarChart(document.getElementById(div_id));
+	    chart.draw(data, options);
+	})
 }
