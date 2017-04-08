@@ -158,7 +158,6 @@ function Main(){
     optimal_binsize_g=OS(spike_time);
     optimal_binsize_p=SS(spike_time);
 
-    console.log(optimal_binsize_p);
     DrawGraphSS(spike_time, optimal_binsize_p);
     DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "lightskyblue");
     DrawGraphOS(spike_time, optimal_binsize_g);
@@ -362,8 +361,7 @@ function DrawHist( spike_time, optimal_binsize, canvas_id, color ) {
 function DrawHist2(spike_time, optimal_binsize, div_id, color) {
     google.charts.setOnLoadCallback(
 	function() {
-	    var arr = [['']].concat(spike_time.map(function(x) {return [x]}));//GoogleChartの仕様、最初の要素はラベル名
-	    var data = google.visualization.arrayToDataTable(arr); //データとして利用できる形に変換
+	    var arr = spike_time.map(function(x) {return [x]});//GoogleChartの仕様、最初の要素はラベル名
 	    var max = Math.max.apply(null, spike_time);
 	    var min = Math.min.apply(null, spike_time);
 	    var onset = min - 0.001 * (max - min);
@@ -373,6 +371,9 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 	    console.log(max);
 	    console.log(optimal_binsize);
 	    console.log(optimal_binnum);
+
+	    var arr = [['']].concat(arr.map(function(x) {return [x[0] - onset]}));
+	    var data = google.visualization.arrayToDataTable(arr); //データとして利用できる形に変換
 	   
 	    var options = {
 		legend: 'none', //多分要素の名前とかを出力する設定
@@ -398,8 +399,9 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 		},
 		colors: [color], //グラフの色の設定
 		bar: {groupWidth: "100%"}, //おまじない
+		ticks: [onset],
 		histogram: {bucketSize: optimal_binsize,
-			    //maxNumBuckets: optimal_binnum,
+			    //maxNumBuckets: optimal_binnum + 1,
 			    minNumBuckets: optimal_binnum,
 			    minValue: onset,
 			    maxValue: max}
@@ -786,8 +788,6 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 
     /* hmm */
     var gra_binwidth = width / rate_hmm.length;
-    console.log("HMM");
-    console.log(rate_hmm);
     for (var i = 0; i < rate_hmm.length; i++) {
 	ctx.fillStyle = "lightsalmon";
 	var x_pos = x_base + i * gra_binwidth;
