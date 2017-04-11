@@ -301,12 +301,12 @@ function SpikeRaster(spike_time, div_id) {
 		    width: width,
 		    height: 8},
 		hAxis: {
-		    gridlines: {color: 'white'},
-		    baselineColor: 'white',
+		    gridlines: {color: 'transparent'},
+		    baselineColor: 'transparent',
 		    textPosition: 'none'},
 		vAxis: {
-		    gridlines: {color: 'white'},
-		    baselineColor: 'white',
+		    gridlines: {color: 'transparent'},
+		    baselineColor: 'transparent',
 		    textPosition: 'none',
 		    maxValue: 0.5},
 		colors: ["black"],
@@ -386,15 +386,15 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 			stroke: "black",
 			strokeWidth: 1}},
 		hAxis: { //横軸のいらないものを見えなくする
-		    gridlines: {color: "white"},
-		    baselineColor: "white",
+		    gridlines: {color: "transparent"},
+		    baselineColor: "transparent",
 		    textPosition: "none",
 		    maxValue: max,
 		    minValue: onset,
 		},
 		vAxis: { //縦軸のいらないものを見えなくする
-		    gridlines: {color: "white"},
-		    baselineColor: "white",
+		    gridlines: {color: "transparent"},
+		    baselineColor: "transparent",
 		    textPosition: "none"
 		},
 		colors: [color], //グラフの色の設定
@@ -434,7 +434,7 @@ function DrawGraphSS( spike_time, optimal_binsize ){
     //document.getElementById("poisson").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;The red dotted line represents a histogram constructed with the Poissonian optimization method (Shimazaki & Shinomoto, 2007).";
 	
     //document.getElementById('optimal').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;The optimal bin size is <font color=\"red\">" + optimal_binsize_g.toFixed(2) + "</font>.<br>&nbsp;&nbsp;&nbsp;&nbsp;The non-Poisson characteristic of your data is estimated by Lv as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font> (<font color=\"red\">" + np +"</font> firing).";
-    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail'>"
+    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=" + '"window.open(' + "'http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/japanese.html'" + '">';
 	
 }
 
@@ -656,12 +656,12 @@ function densitydiv(opty, div_id, color) {
 			  stroke: "black",
 			  strokeWidth: 1}},
 		  hAxis: {
-		      gridlines: {color: 'white'},
-		      baselineColor: 'white',
+		      gridlines: {color: 'transparent'},
+		      baselineColor: 'transparent',
 		      textPosition: 'none'},
 		  vAxis: {
-		      gridlines: {color: 'white'},
-		      baselineColor: 'white',
+		      gridlines: {color: 'transparent'},
+		      baselineColor: 'transparent',
 		      textPosition: 'none'},
 		  colors: [color]
 		}
@@ -817,16 +817,16 @@ function drawHMMDiv(rate_hmm, div_id, color) {
 			stroke: "black",
 			strokeWidth: 1}},
 		hAxis: {
-		    gridlines: {color: 'white'},
-		    baselineColor: 'white',
+		    gridlines: {color: 'transparent'},
+		    baselineColor: 'transparent',
 		    textPosition: 'none'},
 		vAxis: {
-		    gridlines: {color: 'white'},
-		    baselineColor: 'white',
+		    gridlines: {color: 'transparent'},
+		    baselineColor: 'transparent',
 		    textPosition: 'none'},
 		orientation: 'horizontal',
 		colors: [color]}
-	    var chart = new google.visualization.BarChart(document.getElementById(div_id));
+	    var chart = new google.visualization.AreaChart(document.getElementById(div_id));
 	    chart.draw(data, options);
 	})
 }

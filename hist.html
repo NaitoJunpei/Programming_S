@@ -61,28 +61,28 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;Your data would not leak out, because the computation is carried out by your computer.<br><br>
 		
 		<font face="Arial Black"><strong>2.Estimate the firing rate</strong></font><br>
-		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization (Shimazaki and Shinomoto [1])<br>
-		<canvas id="graph_SS" width="800" height="70"></canvas>
+		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization [1]<br>
+		<canvas id="graph_SS" width="800" height="0"></canvas>
 		<div id="graph_SSdiv" style="width: 800px; height: 70px"></div>
 		<div id="raster" style="width: 800px; height: 10px"></div>
 		<p id="optimal_SS" style="font-size:10pt"></p>
-		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains (Omi and Shinomoto [2])<br>
-		<canvas id="graph_OS" width="800" height="70"></canvas><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains [2]<br>
+		<canvas id="graph_OS" width="800" height="0"></canvas><br>
 		<div id="graph_OSdiv" style="width: 800; height:70"></div>
 		<div id="raster2" style="width: 800px; height: 10px"></div>
 		<p id="optimal_OS" style="font-size:10pt"></p>
-		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization (Shimazaki and Shinomoto [3])<br>
-		<canvas id = "ShimazakiKernel" width="800" height="70"></canvas><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization [3]<br>
+		<canvas id = "ShimazakiKernel" width="800" height="0"></canvas><br>
 		<div id="ShimazakiKernelDiv" style="width: 800; height: 70"></div>
 		<div id = "raster3" style="width=800px; height:10px"></div>
 		<p id="optimal_ShimazakiKernel" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(D) Kernel density estimation: L2 risk minimization, reflection boundary.<br>		
-		<canvas id = "ShimazakiKernel2" width="800" height="70"></canvas><br>
+		<canvas id = "ShimazakiKernel2" width="800" height="0"></canvas><br>
 		<div id="ShimazakiKernel2Div" style="width: 800; height: 70"></div>
 		<div id = "raster4" style="width: 800px; height: 10px;"></div>
 		<p id="optimal_ShimazakiKernel2" style="font-size:10pt"></p>
-		&nbsp;&nbsp;&nbsp;&nbsp;(G) Hidden Markov Model<br>
-		<canvas id = "HMM" width = "800" height = "70"></canvas><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;(G) Hidden Markov Model [6]<br>
+		<canvas id = "HMM" width = "800" height = "0"></canvas><br>
 		<div id="HMMDiv" style="width: 800px; height: 70px"></div>
 		<div id = "raster5" style="width: 800px; height: 10px"></div>
 		
@@ -95,6 +95,9 @@
 	<!-- Contact --><FONT size="-1">[1] Shimazaki H and Shinomoto S (2007) A method for selecting the bin size of a time histogram. Neural Computation 19:1503-1700.<br>
 [2] Omi T and Shinomoto S (2011) Optimizing time histograms for non-Poissonian spike trains. Neural Computation 23:3125-3144.<br>
 [3] Shimazaki H and Shinomoto S (2010) Kernel bandwidth optimization in spike rate estimation. J. Computational Neuroscience 29:171-182.<br>
+	  [4] Koyama S and Shinomoto S (2005) Empirical Bayes interpretations of random point events. J. Phys. A 38:L531-L537.<br>
+	  [5] Shimokawa T and Shinomoto S (2009) Estimating instantaneous irregularity of neuronal firing. Neural Computation 21: 1931-1951.<br>
+	  [6] Mochizuki Y and Shinomoto S (2014) Analog and digital codes in the brain. Physical Review E 89:022705.
 	  </FONT><BR>
 </div>
 </BODY>
