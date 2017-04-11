@@ -9,6 +9,8 @@ var Alpha = new Array(3), Beta = new Array(3), Theta = new Array(3);
 var Amp = new Array(3);
 var SpikeData = new Array(3);
 
+//入力関連
+
 function GenerateRandomSpikes( ) {
     /* CHALLENGEの方法を使って作ったランダムなスパイク列を’’’文字列で’’’返す */
     MT = new MersenneTwister(); //乱数を作る
@@ -47,9 +49,11 @@ var Period=[2.0/Math.PI,1.41421356/Math.PI,0.8989898/Math.PI];
 function Rate( index, t ){
 	return Base+Amplitude*( Math.sin(Alpha[index]+t/Period[0]/Amp[index]) + Math.sin(Beta[index]+t/Period[1]/Amp[index]) + Math.sin(Theta[index]+t/Period[2]/Amp[index]) );
 }
+
 function Rate_integral(index, prev_time,new_time){
 	return Base*(new_time-prev_time) - Amplitude*Period[0]*Amp[index]*( Math.cos(Alpha[index]+new_time/Period[0]/Amp[index]) - Math.cos(Alpha[index]+prev_time/Period[0]/Amp[index]) ) - Amplitude*Period[1]*Amp[index]*( Math.cos(Beta[index]+new_time/Period[1]/Amp[index]) - Math.cos(Beta[index]+prev_time/Period[1]/Amp[index]) ) - Amplitude*Period[2]*Amp[index]*( Math.cos(Theta[index]+new_time/Period[2]/Amp[index]) - Math.cos(Theta[index]+prev_time/Period[2]/Amp[index]) );
 }
+
 function Solve(index, prev_time,interval){
        
 	var boundary = new Array(2);
@@ -112,6 +116,7 @@ function Gamma( kappa ){
 	return (x_int+x_frac)/kappa;
     
 }
+
 function GenerateSpikes(index, kappa, spike_time){
     
     var t1,t2;
@@ -146,47 +151,6 @@ function ResetData(){
     return 0;
 }
 
-function Main(){
-    
-    var spike_time;
-    var optimal_binsize_p,optimal_binsize_g;
-
-    spike_time = new Array();
-    PostData(spike_time);
-    //SpikeRaster(spike_time);
-    
-    optimal_binsize_g=OS(spike_time);
-    optimal_binsize_p=SS(spike_time);
-
-    DrawGraphSS(spike_time, optimal_binsize_p);
-    //DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "lightskyblue");
-    DrawGraphOS(spike_time, optimal_binsize_g);
-    //DrawHist2(spike_time, optimal_binsize_g, "graph_OSdiv", "aquamarine");
-    //DrawGraph(spike_time,optimal_binsize_g,optimal_binsize_p);
-    density(spike_time, "ShimazakiKernel");
-    densityR(spike_time, "ShimazakiKernelR");
-
-    var bin_width = 0.05; // bin width in second
-    var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
-    DrawGraphHMM(spike_time, rate_hmm);
-    SpikeRaster(spike_time, "raster5");
-    
-    /*for output*/
-    OUTPUT_binsize_p=optimal_binsize_p;
-    OUTPUT_rate_p = new Array(); 
-    Estimate_Rate(spike_time,optimal_binsize_p,OUTPUT_rate_p);
-    
-    OUTPUT_binsize_g=optimal_binsize_g;
-    OUTPUT_rate_g = new Array(); 
-    Estimate_Rate(spike_time,optimal_binsize_g,OUTPUT_rate_g);
-    
-    OUTPUT_lv=Calc_lv(spike_time);
-    OUTPUT_onset  = spike_time[0]           - 0.001*(spike_time[spike_time.length-1]-spike_time[0]);
-    OUTPUT_offset = spike_time[spike_time.length-1] + 0.001*(spike_time[spike_time.lenfth-1]-spike_time[0]);
-    
-}
-
-
 function PostData( spike_time ){
 	
     /*convert data*/
@@ -205,22 +169,6 @@ function PostData( spike_time ){
     }
 	
     /*sort if necessary*/
-    /* var check=0;
-    var min,min_index;
-	
-    for(var i=0;i<spike_time.length-1;i++){
-	if(spike_time[i]>spike_time[i+1]){ check=1; }
-    }
-	
-    if( check==1 ){
-	for(var i=0;i<spike_time.length;i++){
-	    for(var j=i;j<spike_time.length;j++){
-		if( j==i || min>spike_time[j] ){ min=spike_time[j]; min_index=j; }
-	    }
-	    spike_time[min_index]=spike_time[i];
-	    spike_time[i]=min;
-	}
-    } */
     spike_time.sort(function(a, b) {
 	if (a < b) return -1;
 	if (a > b) return 1;
@@ -229,6 +177,40 @@ function PostData( spike_time ){
     
     return 0;
 }
+
+/* 本体 */
+
+function Main(){
+    
+    var spike_time;
+    var optimal_binsize_p,optimal_binsize_g;
+
+    spike_time = new Array();
+
+    //input
+    PostData(spike_time);
+    
+    //ShimazakiShinomoto
+    optimal_binsize_p=SS(spike_time);
+    DrawGraphSS(spike_time, optimal_binsize_p);
+
+    //OmiShinomoto
+    optimal_binsize_g=OS(spike_time);
+    DrawGraphOS(spike_time, optimal_binsize_g);
+
+    //Kernel bandwidth optimization
+    density(spike_time, "ShimazakiKernel");
+
+    //Kernel density estimation with reflection boundary
+    densityR(spike_time, "ShimazakiKernelR");
+
+    //Hidden Markov Model
+    var bin_width = 0.05; // bin width in second
+    var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
+    DrawGraphHMM(spike_time, rate_hmm);
+}
+
+
 ///////////////////////////////////////////////
 //Estimate Rate
 ///////////////////////////////////////////////
@@ -246,6 +228,7 @@ function Estimate_Rate( spike_time, optimal_binsize, optimal_rate ){
     
     return rate_max;
 }
+
 ///////////////////////////////////////////////
 //Graph
 ///////////////////////////////////////////////
@@ -314,13 +297,13 @@ function DrawHist(spike_time, optimal_binsize, div_id, color) {
 		    gridlines: {color: "transparent"},
 		    baselineColor: "transparent",
 		    textPosition: "none",
-		    maxValue: max,
 		    minValue: onset,
 		},
 		vAxis: { //縦軸のいらないものを見えなくする
 		    gridlines: {color: "transparent"},
 		    baselineColor: "transparent",
-		    textPosition: "none"
+		    textPosition: "none",
+		    minValue: 0
 		},
 		colors: [color], //グラフの色の設定
 		bar: {groupWidth: "100%"}, //おまじない
@@ -329,7 +312,7 @@ function DrawHist(spike_time, optimal_binsize, div_id, color) {
 			    //maxNumBuckets: optimal_binnum + 1,
 			    minNumBuckets: optimal_binnum,
 			    minValue: onset,
-			    maxValue: max}
+			    }
 	    }
 	    var chart = new google.visualization.Histogram(document.getElementById(div_id));
 	    chart.draw(data, options);
@@ -352,29 +335,6 @@ function DrawGraphOS(spike_time, optimal_binsize) {
     document.getElementById('optimal_OS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. Irregularity is estimated as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/oshist/hist.html')>";
 }
 
-///////////////////////////////
-//Output
-///////////////////////////////
-function OutputResults(){
-
-    var result;
-	
-    var np;
-    if( OUTPUT_lv<1 ) np="regular";
-    else np="bursty";
-	
-    result="The optimal bin size is " + OUTPUT_binsize_g.toFixed(2) + ".<br>The non-Poisson characteristic of your data is estimated by Lv as Lv = " + OUTPUT_lv.toFixed(2) + " (" + np +" firing).<br><br><br>";
-	
-    result+="The rate estimated based on non-Poissonian optimization method.<br> time / rate<br>";
-    
-    for(var i=0;i<OUTPUT_rate_g.length;i++){ result+= (OUTPUT_onset+i*OUTPUT_binsize_g).toFixed(2) + "&nbsp;&nbsp;&nbsp;&nbsp;" + OUTPUT_rate_g[i].toFixed(2) + "<br>" + (OUTPUT_onset+(i+1)*OUTPUT_binsize_g).toFixed(2) + "&nbsp;&nbsp;&nbsp;&nbsp;" + OUTPUT_rate_g[i].toFixed(2) + "<br>"; }
-	
-    result+="<br><br>The rate estimated based on Poissonian optimization method.<br> time / rate<br>";
-	
-    for(var i=0;i<OUTPUT_rate_p.length;i++){ result+= (OUTPUT_onset+i*OUTPUT_binsize_p).toFixed(2) + "&nbsp;&nbsp;&nbsp;&nbsp;" + OUTPUT_rate_p[i].toFixed(2) + "<br>" + (OUTPUT_onset+(i+1)*OUTPUT_binsize_p).toFixed(2) + "&nbsp;&nbsp;&nbsp;&nbsp;" + OUTPUT_rate_p[i].toFixed(2) + "<br>"; }
-	
-    document.write(result);
-}
 /////////////////////////////
 //lv
 /////////////////////////////
@@ -546,7 +506,8 @@ function drawDensity(opty, div_id, color) {
 		  vAxis: {
 		      gridlines: {color: 'transparent'},
 		      baselineColor: 'transparent',
-		      textPosition: 'none'},
+		      textPosition: 'none',
+		      minValue: 0},
 		  colors: [color]
 		}
 	    var chart = new google.visualization.AreaChart(document.getElementById(div_id));
@@ -627,22 +588,16 @@ function Gauss(x, w) {
 
 //////Hidden Markov Model//////
 function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
-    var spike_num = spike_time.length;
-    var onset = spike_time[0]              - 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
-    var offset = spike_time[spike_num - 1] + 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
+    // 真ん中でグラフの高さを変えたい
+    for (var i = 0; i < rate_hmm.length - 1; i++) {
+	if (rate_hmm[i][1] != rate_hmm[i + 1][1]) { //値が変わったら
+	    mid = (rate_hmm[i][0] + rate_hmm[i + 1][0]) / 2; //真ん中の値を出して
+	    rate_hmm.splice(i + 1, 0, [mid, rate_hmm[i][1]], [mid, rate_hmm[i + 1][1]]); //高さを変える
+	    i += 2; //加えたデータは飛ばさないと大変なことに
+	}
+	
+    }
 
-    var optimal_rate_p, optimal_rate_g;
-    var rate_max;
-
-    rate_max = Math.max.apply(null, rate_hmm.map(function(x) { return x[1] }));
-
-    drawHMMDiv(rate_hmm, "HMMDiv", "lightsalmon");
-
-    document.getElementById('HMMMessage').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>";
-
-}
-
-function drawHMMDiv(rate_hmm, div_id, color) {
     google.charts.setOnLoadCallback(
 	function() {
 	    var arr = [['', '']].concat(rate_hmm);
@@ -665,10 +620,16 @@ function drawHMMDiv(rate_hmm, div_id, color) {
 		vAxis: {
 		    gridlines: {color: 'transparent'},
 		    baselineColor: 'transparent',
-		    textPosition: 'none'},
+		    textPosition: 'none',
+		    minValue: 0},
 		orientation: 'horizontal',
-		colors: [color]}
-	    var chart = new google.visualization.AreaChart(document.getElementById(div_id));
+		colors: ["lightsalmon"]}
+	    var chart = new google.visualization.AreaChart(document.getElementById("HMM"));
 	    chart.draw(data, options);
 	})
+
+    SpikeRaster(spike_time, "raster5");
+    document.getElementById('HMMMessage').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>";
+
 }
+
