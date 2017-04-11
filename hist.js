@@ -434,7 +434,7 @@ function DrawGraphSS( spike_time, optimal_binsize ){
     //document.getElementById("poisson").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;The red dotted line represents a histogram constructed with the Poissonian optimization method (Shimazaki & Shinomoto, 2007).";
 	
     //document.getElementById('optimal').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;The optimal bin size is <font color=\"red\">" + optimal_binsize_g.toFixed(2) + "</font>.<br>&nbsp;&nbsp;&nbsp;&nbsp;The non-Poisson characteristic of your data is estimated by Lv as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font> (<font color=\"red\">" + np +"</font> firing).";
-    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=" + '"window.open(' + "'http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/japanese.html'" + ')">';
+    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sshist/hist.html')>";
 	
 }
 
@@ -446,7 +446,7 @@ function DrawGraphOS(spike_time, optimal_binsize) {
     var np;
     if( Calc_lv(spike_time)<1 ) np="regular";
     else np="bursty";
-    document.getElementById('optimal_OS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. Irregularity is estimated as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font>.";
+    document.getElementById('optimal_OS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. Irregularity is estimated as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/oshist/hist.html')>";
 }
 
 ///////////////////////////////
@@ -630,7 +630,7 @@ function density(spike_time, canvas_id) {
     }
     densitydiv(opty, "ShimazakiKernelDiv", "orange");
     SpikeRaster(spike_time, "raster3");
-    document.getElementById('optimal_ShimazakiKernel').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.";
+    document.getElementById('optimal_ShimazakiKernel').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sskernel/kernel.html')>";
 }
 
 function densitydiv(opty, div_id, color) {
@@ -697,7 +697,7 @@ function density2(spike_time, canvas_id) {
     }
     densitydiv(opty, "ShimazakiKernel2Div", "mediumaquamarine");    
     SpikeRaster(spike_time, "raster4");
-    document.getElementById('optimal_ShimazakiKernel2').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.";
+    document.getElementById('optimal_ShimazakiKernel2').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/reflectedkernel/reflectedkernel.html')>";
 }
 
 function xaxis() {
@@ -829,4 +829,5 @@ function drawHMMDiv(rate_hmm, div_id, color) {
 	    var chart = new google.visualization.AreaChart(document.getElementById(div_id));
 	    chart.draw(data, options);
 	})
+    document.getElementById('HMMMessage').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>";    
 }
