@@ -159,12 +159,12 @@ function Main(){
     optimal_binsize_p=SS(spike_time);
 
     DrawGraphSS(spike_time, optimal_binsize_p);
-    DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "lightskyblue");
+    //DrawHist2(spike_time, optimal_binsize_p, "graph_SSdiv", "lightskyblue");
     DrawGraphOS(spike_time, optimal_binsize_g);
-    DrawHist2(spike_time, optimal_binsize_g, "graph_OSdiv", "aquamarine");
+    //DrawHist2(spike_time, optimal_binsize_g, "graph_OSdiv", "aquamarine");
     //DrawGraph(spike_time,optimal_binsize_g,optimal_binsize_p);
     density(spike_time, "ShimazakiKernel");
-    density2(spike_time, "ShimazakiKernel2");
+    densityR(spike_time, "ShimazakiKernelR");
 
     var bin_width = 0.05; // bin width in second
     var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
@@ -240,8 +240,6 @@ function Estimate_Rate( spike_time, optimal_binsize, optimal_rate ){
     
     var optimal_binnum=Math.ceil((spike_time[spike_num-1]-onset)/optimal_binsize);
     var rate_max;
-    console.log("debag");
-    console.log(optimal_binnum);
     for(var i=0;i<optimal_binnum;i++){  optimal_rate[i]=0;  }
     for(var i=0;i<spike_num;i++){   optimal_rate[Math.floor((spike_time[i]-onset)/optimal_binsize)]+=1.0/optimal_binsize;   }
     for(var i=0;i<optimal_binnum;i++){  if(i==0 || optimal_rate[i]>rate_max ) rate_max=optimal_rate[i];  }
@@ -259,39 +257,12 @@ var y_graph=70;
 var height_graph=60;
 var height_hist=50;
 
-/* function SpikeRaster(spike_time, canvas_id){
-
-    var spike_num=spike_time.length;
-    var onset  = spike_time[0]           - 0.001*(spike_time[spike_num-1]-spike_time[0]);
-    var offset = spike_time[spike_num-1] + 0.001*(spike_time[spike_num-1]-spike_time[0]);
-    
-    var canvas = document.getElementById(canvas_id);
-    if ( ! canvas || ! canvas.getContext ) {	return false;	}
-    var ctx = canvas.getContext('2d');
-	
-    //reset canvas
-    ctx.clearRect(0,0,800,y_raster);
-    
-    //raster
-    ctx.strokeStyle = "black"
-    ctx.strokeRect(x_base-10,y_raster, width+20,0);
-	
-    for(i=0;i<spike_num;i++){
-	x=(spike_time[i]-onset)/(offset-onset);
-	ctx.strokeStyle = "black";
-	ctx.strokeRect(x_base+width*x,y_raster,0,-30);
-    }
-    
-    return 0;
-
-} */
-
 function SpikeRaster(spike_time, div_id) {
     google.charts.setOnLoadCallback(
 	function draw_chart() {
 	    var arr = [['', '']].concat(spike_time.map(function(x) { return [x, 1]}));
 	    var data = google.visualization.arrayToDataTable(arr);
-	    var options1 = {
+	    var options = {
 		legend: 'none',
 		bar: {
 		    groupWidth: 2},
@@ -312,53 +283,12 @@ function SpikeRaster(spike_time, div_id) {
 		colors: ["black"],
 		orientation: 'horizontal',
 		focusTarget: 'none'}
-	    var chart1 = new google.visualization.BarChart(document.getElementById(div_id));
-	    chart1.draw(data, options1);
+	    var chart = new google.visualization.BarChart(document.getElementById(div_id));
+	    chart.draw(data, options);
 	})
 }
 
-function DrawHist( spike_time, optimal_binsize, canvas_id, color ) {
-    var spike_num = spike_time.length;
-    var onset = spike_time[0] - 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
-    var offset = spike_time[spike_num - 1] + 0.001 * (spike_time[spike_num - 1] - spike_time[0]);
-
-    var optimal_rate;
-    var rate_max;
-
-    optimal_rate = new Array();
-    rate_max = Estimate_Rate(spike_time, optimal_binsize, optimal_rate);
-
-    var canvas = document.getElementById(canvas_id);
-    if (!canvas || !canvas.getContext) {return false;}
-    var ctx = canvas.getContext('2d');
-
-    /* reset canvas */
-    ctx.clearRect(0, 0, 800, y_graph);
-
-    /* histogram */
-    ctx.strokeStyle = "brack";
-    ctx.strokeRect(x_base, y_graph, width, -height_graph);
-
-    for(var i = 0; i < optimal_rate.length; i++) {
-	var x = i * optimal_binsize / (offset - onset);
-	var y = optimal_rate[i] / rate_max;
-
-	var xx = x_base + width * x;
-	var yy = height_hist * y;
-
-	ctx.fillStyle= color;
-	if (onset + (i + 1) * optimal_binsize < offset) {
-	    ctx.fillRect(xx, y_graph, width * optimal_binsize / (offset - onset), -yy);
-	    ctx.strokeRect(xx, y_graph, width * optimal_binsize / (offset - onset), -yy);
-	}
-	else {
-	    ctx.fillRect(xx, y_graph, width - width * x, -height_hist * y);
-	    ctx.strokeRect(xx, y_graph, width - width * x, -height_hist * y);
-	}
-    }
-}
-
-function DrawHist2(spike_time, optimal_binsize, div_id, color) {
+function DrawHist(spike_time, optimal_binsize, div_id, color) {
     google.charts.setOnLoadCallback(
 	function() {
 	    var arr = spike_time.map(function(x) {return [x]});//GoogleChartの仕様、最初の要素はラベル名
@@ -366,11 +296,6 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
 	    var min = Math.min.apply(null, spike_time);
 	    var onset = min - 0.001 * (max - min);
 	    var optimal_binnum = Math.ceil((max - onset) / optimal_binsize);
-	    console.log(arr);
-	    console.log(onset);
-	    console.log(max);
-	    console.log(optimal_binsize);
-	    console.log(optimal_binnum);
 
 	    var arr = [['']].concat(arr.map(function(x) {return [x[0] - onset]}));
 	    var data = google.visualization.arrayToDataTable(arr); //データとして利用できる形に変換
@@ -416,24 +341,6 @@ function DrawGraphSS( spike_time, optimal_binsize ){
     DrawHist(spike_time, optimal_binsize, "graph_SS", "lightskyblue");
     SpikeRaster(spike_time, "raster");
 
-    //ctx.font = "12px 'Arial'";
-    //ctx.fillStyle = "black";
-    //ctx.fillText((rate_max*height_graph/height_hist).toFixed(2),x_base-35,y_graph-height_graph);
-    //ctx.fillText("0",x_base-20,y_graph);
-    //ctx.fillText(spike_time[0].toFixed(2),x_base+5,y_graph+20);
-    //ctx.fillText(spike_time[spike_num-1].toFixed(2),x_base+width+5,y_graph+20);
-    //ctx.font = "16px 'Arial'";
-    //ctx.fillText("time",x_base+0.5*width-20,y_graph+35);
-    //ctx.fillText("Rate",20,y_graph-height_graph/2+10);
-    
-    /*output*/
-    var np;
-    if( Calc_lv(spike_time)<1 ) np="regular";
-    else np="bursty";
-    
-    //document.getElementById("poisson").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;The red dotted line represents a histogram constructed with the Poissonian optimization method (Shimazaki & Shinomoto, 2007).";
-	
-    //document.getElementById('optimal').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;The optimal bin size is <font color=\"red\">" + optimal_binsize_g.toFixed(2) + "</font>.<br>&nbsp;&nbsp;&nbsp;&nbsp;The non-Poisson characteristic of your data is estimated by Lv as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font> (<font color=\"red\">" + np +"</font> firing).";
     document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sshist/hist.html')>";
 	
 }
@@ -442,10 +349,6 @@ function DrawGraphOS(spike_time, optimal_binsize) {
     DrawHist(spike_time, optimal_binsize, "graph_OS", "aquamarine");
     SpikeRaster(spike_time, "raster2");
 
-    /* output */
-    var np;
-    if( Calc_lv(spike_time)<1 ) np="regular";
-    else np="bursty";
     document.getElementById('optimal_OS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. Irregularity is estimated as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/oshist/hist.html')>";
 }
 
@@ -602,38 +505,19 @@ function SearchMinimum(spike_time) {
 
 }
 
-function density(spike_time, canvas_id) {
+function density(spike_time, div_id) {
     DATA_MAX = Math.max.apply(null, spike_time);
     DATA_MIN = Math.min.apply(null, spike_time);
     
     var optw = SearchMinimum(spike_time);
     var opty = kernel(spike_time, optw);
-    var canvas = document.getElementById(canvas_id);
-    if (canvas.getContext) {
-	var ctx = canvas.getContext("2d");
-	ctx.clearRect(0, 0, 800, y_graph);
-	ctx.beginPath();
-	ctx.moveTo(x_base, y_graph);
-	for (var i = 0; i < K; i++) {
-	    PointX = Math.round(i * width / (K - 1) + x_base);
-	    PointY = y_graph - Math.round(y_graph * opty[i] / (1.2 * Math.max.apply(null, opty)));
-	    ctx.lineTo(PointX, PointY);
-	}
-	ctx.lineTo(width + x_base, y_graph)
-	ctx.fillStyle = "rgb(255, 165, 0)";
-	ctx.fill();
-	ctx.strokeStyle = "brack";
-	ctx.strokeRect(x_base, y_graph, width, -height_graph);
 
-	ctx.stroke();
-
-    }
-    densitydiv(opty, "ShimazakiKernelDiv", "orange");
+    drawDensity(opty, "ShimazakiKernel", "orange");
     SpikeRaster(spike_time, "raster3");
     document.getElementById('optimal_ShimazakiKernel').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sskernel/kernel.html')>";
 }
 
-function densitydiv(opty, div_id, color) {
+function drawDensity(opty, div_id, color) {
     google.charts.setOnLoadCallback(
 	function() {
 	    var arr = [];
@@ -672,32 +556,13 @@ function densitydiv(opty, div_id, color) {
 
 
 
-function density2(spike_time, canvas_id) {
+function densityR(spike_time, canvas_id) { //Kernel density estimation with reflection boundary
     var optw = SearchMinimum(spike_time);
-    var opty = kernel2(spike_time, optw);
-    var canvas = document.getElementById(canvas_id);
-    if (canvas.getContext) {
-	var ctx = canvas.getContext("2d");
-	ctx.clearRect(0, 0, 800, y_graph);
-	ctx.beginPath();
-	ctx.moveTo(x_base, y_graph);
-	for (var i = 0; i < K; i++) {
-	    PointX = Math.round(i * width / (K - 1) + x_base);
-	    PointY = y_graph - Math.round(y_graph * opty[i] / (1.2 * Math.max.apply(null, opty)));
-	    ctx.lineTo(PointX, PointY);
-	}
-	ctx.lineTo(width + x_base, y_graph)
-	ctx.fillStyle = "mediumaquamarine";
-	ctx.fill();
-	ctx.stroke();
-	ctx.strokeStyle = "brack";
-	ctx.strokeRect(x_base, y_graph, width, -height_graph);
+    var opty = kernelR(spike_time, optw);
 
-
-    }
-    densitydiv(opty, "ShimazakiKernel2Div", "mediumaquamarine");    
+    drawDensity(opty, "ShimazakiKernelR", "mediumaquamarine");    
     SpikeRaster(spike_time, "raster4");
-    document.getElementById('optimal_ShimazakiKernel2').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/reflectedkernel/reflectedkernel.html')>";
+    document.getElementById('optimal_ShimazakiKernelR').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/reflectedkernel/reflectedkernel.html')>";
 }
 
 function xaxis() {
@@ -723,7 +588,7 @@ function kernel(spike_time, w) {
     return y;
 }
 
-function kernel2(spike_time, w) {
+function kernelR(spike_time, w) {
     //鏡像折り返しに対応
     var x = xaxis();
     var y = new Array(K);
@@ -769,34 +634,11 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
     var optimal_rate_p, optimal_rate_g;
     var rate_max;
 
-    /* for (var i = 0; i < rate_hmm.length; i++) {
-	if (i == 0 || rate_max < rate_hmm[i][1]) rate_max = rate_hmm[i][1];
-    } */
     rate_max = Math.max.apply(null, rate_hmm.map(function(x) { return x[1] }));
-    
 
-    var canvas = document.getElementById("HMM");
-    if (!canvas || !canvas.getContext) { return false;}
-    var ctx = canvas.getContext('2d');
-
-    /* reset canvas */
-    ctx.clearRect(0, 0, 800, 70);
-
-    /* sotowaku */
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(x_base, y_graph, width, -height_graph);
-
-    /* hmm */
-    var gra_binwidth = width / rate_hmm.length;
-    for (var i = 0; i < rate_hmm.length; i++) {
-	ctx.fillStyle = "lightsalmon";
-	var x_pos = x_base + i * gra_binwidth;
-	var height = height_hist * rate_hmm[i][1] / rate_max;
-	ctx.fillRect(x_pos, y_graph, gra_binwidth, -height);
-	ctx.strokeStyle = "black";
-	ctx.strokeRect(x_pos, y_graph, gra_binwidth, -height);
-    }
     drawHMMDiv(rate_hmm, "HMMDiv", "lightsalmon");
+
+    document.getElementById('HMMMessage').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>";
 
 }
 
@@ -829,5 +671,4 @@ function drawHMMDiv(rate_hmm, div_id, color) {
 	    var chart = new google.visualization.AreaChart(document.getElementById(div_id));
 	    chart.draw(data, options);
 	})
-    document.getElementById('HMMMessage').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>";    
 }

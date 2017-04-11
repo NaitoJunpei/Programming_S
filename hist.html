@@ -43,13 +43,10 @@
 		<script type="text/javascript">
 		  function handleFileSelect(evt) {
 		    var file = evt.target.files;
-		    console.log(file);
-		    console.log(file[0].name + "を取得しました");
 		    var reader = new FileReader();
 		    reader.readAsText(file[0]);
 		    reader.onload = function(ev) {
 		      document.data.spikes.value = reader.result;
-		      console.log(reader.result);
 		      Main();
 		    }
 		  }
@@ -62,27 +59,22 @@
 		
 		<font face="Arial Black"><strong>2.Estimate the firing rate</strong></font><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization [1]<br>
-		<canvas id="graph_SS" width="800" height="0"></canvas>
-		<div id="graph_SSdiv" style="width: 800px; height: 70px"></div>
+		<div id="graph_SS" style="width: 800px; height: 70px"></div>
 		<div id="raster" style="width: 800px; height: 10px"></div>
 		<p id="optimal_SS" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains [2]<br>
-		<canvas id="graph_OS" width="800" height="0"></canvas><br>
-		<div id="graph_OSdiv" style="width: 800; height:70"></div>
+		<div id="graph_OS" style="width: 800; height:70"></div>
 		<div id="raster2" style="width: 800px; height: 10px"></div>
 		<p id="optimal_OS" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization [3]<br>
-		<canvas id = "ShimazakiKernel" width="800" height="0"></canvas><br>
-		<div id="ShimazakiKernelDiv" style="width: 800; height: 70"></div>
+		<div id="ShimazakiKernel" style="width: 800; height: 70"></div>
 		<div id = "raster3" style="width=800px; height:10px"></div>
 		<p id="optimal_ShimazakiKernel" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(D) Kernel density estimation: L2 risk minimization, reflection boundary.<br>		
-		<canvas id = "ShimazakiKernel2" width="800" height="0"></canvas><br>
-		<div id="ShimazakiKernel2Div" style="width: 800; height: 70"></div>
+		<div id="ShimazakiKernelR" style="width: 800; height: 70"></div>
 		<div id = "raster4" style="width: 800px; height: 10px;"></div>
-		<p id="optimal_ShimazakiKernel2" style="font-size:10pt"></p>
+		<p id="optimal_ShimazakiKernelR" style="font-size:10pt"></p>
 		&nbsp;&nbsp;&nbsp;&nbsp;(G) Hidden Markov Model [6]<br>
-		<canvas id = "HMM" width = "800" height = "0"></canvas><br>
 		<div id="HMMDiv" style="width: 800px; height: 70px"></div>
 		<div id = "raster5" style="width: 800px; height: 10px"></div>
 		<p id="HMMMessage" style=font-size:10pt></p>
