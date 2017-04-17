@@ -140,6 +140,7 @@ function GenerateSpikes(index, kappa, spike_time){
 
 function Initialize() {
     document.data.spikes.value = "0.017 0.058 0.119 0.191 0.194 0.259 0.289 0.305 0.346 0.355 0.481 0.537 0.566 0.621 0.642 0.703 0.738 0.8 1.035 1.059 1.097 1.158 1.297 1.339 1.475 1.495 1.603 1.634 1.663 1.771 1.789 1.801 1.835 1.887 1.91 1.914 1.975 2 2.023 2.041 2.059 2.081 2.112 2.155 2.166 2.195 2.214 2.242 2.258 2.264 2.329 2.343 2.354 2.384 2.395 2.411 2.438 2.45 2.47 2.485 2.503 2.529 2.56 2.582 2.587 2.596 2.6 2.623 2.628 2.642 2.661 2.7 2.71 2.717 2.734 2.738 2.758 2.775 2.775 2.786 2.797 2.809 2.838 2.853 2.861 2.866 2.877 2.906 2.958 2.977 3.012 3.031 3.039 3.086 3.092 3.101 3.121 3.156 3.168 3.189 3.19 3.222 3.254 3.275 3.277 3.329 3.331 3.35 3.386 3.39 3.44 3.455 3.518 3.519 3.551 3.617 3.648 3.651 3.668 3.705 3.715 3.793 3.808 3.832 3.858 3.889 3.898 3.969 4.053 4.144 4.194 4.407 4.523 4.578 4.643 4.676 4.705 4.803 4.917 5.022 5.056 5.095 5.127 5.164 5.244 5.286 5.339 5.401 5.431 5.485 5.491 5.615 5.636 5.65 5.658 5.687 5.736 5.746 5.797 5.854 5.915 5.933 5.96 6.075 6.152 6.179 6.206 6.27 6.288 6.441 6.489 6.505 6.512 6.53 6.556 6.583 6.614 6.64 6.652 6.689 6.733 6.79 6.795 6.799 6.864 6.886 6.891 6.894 6.917 6.941 7.007 7.02 7.027 7.061 7.081 7.089 7.112 7.128 7.145 7.152 7.177 7.183 7.213 7.221 7.227 7.243 7.26 7.263 7.298 7.333 7.351 7.373 7.38 7.4 7.419 7.435 7.475 7.497 7.512 7.529 7.54 7.582 7.589 7.59 7.707 7.733 7.805 7.815 7.845 7.911 7.939 7.963 8.021 8.037 8.052 8.059 8.083 8.119 8.159 8.185 8.264 8.295 8.383 8.499 8.605 8.689 8.724 8.789 8.855 8.874 8.901 8.909 8.919 9.004 9.047 9.065 9.073 9.096 9.115 9.147 9.204 9.228 9.244 9.259 9.294 9.332 9.363 9.401 9.438 9.449 9.463 9.511 9.576 9.581 9.586 9.6 9.628 9.635 9.722 9.725 9.74 9.75 9.781 9.789 9.871 9.905 9.925 9.958";
+    document.getElementById("Output").style.display="none";
     Main();
 }
 
@@ -321,9 +322,9 @@ function DrawGraphSS( spike_time, optimal_binsize ){
 	
     DrawHist(spike_time, optimal_binsize, "graph_SS", "mediumblue");
     SpikeRaster(spike_time, "raster");
-    console.log(spike_time.join(','));
     document.getElementById('optimal_SS').innerHTML=optimal_binsize.toFixed(2);
-    document.getElementById('optimal_SS').addEventListener("click", console.log(9));
+    document.getElementById('outputSS').addEventListener("click", function() {OutputSS(spike_time, optimal_binsize)});
+    
 }
 
 function DrawGraphOS(spike_time, optimal_binsize) {
@@ -331,6 +332,7 @@ function DrawGraphOS(spike_time, optimal_binsize) {
     SpikeRaster(spike_time, "raster2");
     document.getElementById("optimal_OS1").innerHTML = optimal_binsize.toFixed(2);
     document.getElementById("optimal_OS2").innerHTML = Calc_lv(spike_time).toFixed(2);
+    document.getElementById("outputOS").addEventListener("click", function() {OutputOS(spike_time, optimal_binsize);});
 }
 
 
@@ -632,5 +634,6 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 	})
 
     SpikeRaster(spike_time, "raster5");
+    document.getElementById("outputHMM").addEventListener("click", function() {OutputHMM(spike_time, rate_hmm);});
 }
 
