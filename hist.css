@@ -1,0 +1,23 @@
+INPUT {
+    font-size:10pt;
+}
+
+TEXTAREA {
+    font-size:10pt;
+}
+
+.graph {
+    width: 800px;
+    height: 70px;
+}
+
+.raster {
+    width: 800px;
+    height: 10px;
+}
+
+.value {
+    font-size: 10pt;
+    display: inline;
+    color: red;
+}

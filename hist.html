@@ -9,6 +9,7 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <META name="GENERATOR" content="IBM WebSphere Studio Homepage Builder Version 13.0.6.0 for Windows">
 <META http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" href="hist.css" type="text/css">
 	<script type="text/javascript" src="mt.js"></script>
 	<script type="text/javascript" src="hmm_funcs.js"></script>
 	<script type="text/javascript" src="hist.js"></script>
@@ -41,7 +42,7 @@
 	<div id="contents">
 	<FORM name="data">
 		<font face="Arial Black"><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value=" or, replace it with another sample," onclick="ResetData()" style="font-size:10pt" id="test"> or, upload your data <INPUT type="file" id="selfile" style="display:none"><INPUT type="button" value="upload" style="font-sizse:10pt" onClick="document.getElementById('selfile').click()"<br>
+		<INPUT type="button" value=" or, replace it with another sample," onclick="ResetData()" id="test"> or, upload your data <INPUT type="file" id="selfile" style="display:none"><INPUT type="button" value="upload" onClick="document.getElementById('selfile').click()"<br>
 		<script type="text/javascript">
 		  function handleFileSelect(evt) {
 		    var file = evt.target.files;
@@ -55,34 +56,62 @@
 		  document.getElementById('selfile').addEventListener('change', handleFileSelect, false);
 		</script>
 		
-		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="3" cols="95" font="3" style="font-size:10pt" onChange="Main()"></TEXTAREA><br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="3" cols="95" font="3" onChange="Main()"></TEXTAREA><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Please list spike times in increasing order, separated by a comma or a space.<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Your data would not leak out, because the computation is carried out by your computer.<br><br>
 		
 		<font face="Arial Black"><strong>2.Estimate the firing rate</strong></font>
-		<INPUT type="button" value="Estimate the rate" onclick="" style="font-size:10pt"><br>
+		<INPUT type="button" value="Estimate the rate" onclick="" ><br>
+
+		<!-- ShimazakiShinomoto -->
 		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization [1]<br>
-		<div id="graph_SS" style="width: 800px; height: 70px"></div>
-		<div id="raster" style="width: 800px; height: 10px"></div>
-		<p id="optimal_SS" style="font-size:10pt"></p>
+		<div id="graph_SS" class="graph"></div>
+		<div id="raster" class="raster"></div>
+		&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize =
+		<p id="optimal_SS" class="value"></p>.
+		<INPUT type="button" value="data sheet" id="outputSS">
+		<INPUT type="button" value="more detail" onClick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sshist/hist.html')><br>
+
+		<!-- OmiShinomoto -->
 		&nbsp;&nbsp;&nbsp;&nbsp;(B) Histogram: L2 risk minimization for non-Poisson spike trains [2]<br>
-		<div id="graph_OS" style="width: 800; height:70"></div>
-		<div id="raster2" style="width: 800px; height: 10px"></div>
-		<p id="optimal_OS" style="font-size:10pt"></p>
+		<div id="graph_OS" class="graph"></div>
+		<div id="raster2" class="raster"></div>
+		&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = 
+		<p id="optimal_OS1" class="value"></p>.
+		Irregularity is estimated as Lv =
+		<p id="optimal_OS2" class="value"></p>.
+		<INPUT type="button" value="data sheet" id="outputOS">
+		<INPUT type="button" value="more detail" onClick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/oshist/hist.html')><br>
+
+		<!-- Kernel Density Estimation -->
 		&nbsp;&nbsp;&nbsp;&nbsp;(C) Kernel density estimation: L2 risk minimization [3]<br>
-		<div id="ShimazakiKernel" style="width: 800; height: 70"></div>
-		<div id = "raster3" style="width=800px; height:10px"></div>
-		<p id="optimal_ShimazakiKernel" style="font-size:10pt"></p>
+		<div id="ShimazakiKernel" class="graph"></div>
+		<div id="raster3" class="raster"></div>
+		&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = 
+		<p id="optimal_ShimazakiKernel" class="value"></p>.
+		<INPUT type="button" value="data sheet" id="outputSSKernel">
+		<INPUT type="button" value="more detail" onClick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sskernel/kernel.html')><br>
+
+		<!-- Kernel Density Estimation Reflection -->
 		&nbsp;&nbsp;&nbsp;&nbsp;(D) Kernel density estimation: L2 risk minimization, reflection boundary.<br>		
-		<div id="ShimazakiKernelR" style="width: 800; height: 70"></div>
-		<div id = "raster4" style="width: 800px; height: 10px;"></div>
-		<p id="optimal_ShimazakiKernelR" style="font-size:10pt"></p>
+		<div id="ShimazakiKernelR" class="graph"></div>
+		<div id="raster4" class="raster"></div>
+		&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = 
+		<p id="optimal_ShimazakiKernelR" class="value"></p>.
+		<INPUT type="button" value="data sheet" id="outputSSKernelR">
+		<INPUT type="button" value="more detail" onClick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/reflectedkernel/reflectedkernel.html')><br>
+
+
 		&nbsp;&nbsp;&nbsp;&nbsp;(E) Bayesian rate estimation [4][5]<br>
+		<div class="raster"></div>
 		&nbsp;&nbsp;&nbsp;&nbsp;(F) Bayesian rate estimation for non-Poison spike trains [4][5]<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;(G) Two-state Hidden Markov Model [6]<br>
-		<div id="HMM" style="width: 800px; height: 70px"></div>
-		<div id = "raster5" style="width: 800px; height: 10px"></div>
-		<p id="HMMMessage" style=font-size:10pt></p>
+		<div id="HMM" class="graph"></div>
+		<div id = "raster5" class="raster"></div>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<p id="HMMMessage" class="value"></p>
+		<INPUT type="button" value="data sheet" id="outputHMM">
+		<INPUT type="button" value="more detail" onClick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>
 		
 	</FORM>
 	<HR width="920" align="left">

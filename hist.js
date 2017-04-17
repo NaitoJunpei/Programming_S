@@ -321,17 +321,18 @@ function DrawGraphSS( spike_time, optimal_binsize ){
 	
     DrawHist(spike_time, optimal_binsize, "graph_SS", "mediumblue");
     SpikeRaster(spike_time, "raster");
-
-    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet' onClick='OutputPloto()'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sshist/hist.html')>";
-	
+    console.log(spike_time.join(','));
+    document.getElementById('optimal_SS').innerHTML=optimal_binsize.toFixed(2);
+    document.getElementById('optimal_SS').addEventListener("click", console.log(9));
 }
 
 function DrawGraphOS(spike_time, optimal_binsize) {
     DrawHist(spike_time, optimal_binsize, "graph_OS", "mediumaquamarine");
     SpikeRaster(spike_time, "raster2");
-
-    document.getElementById('optimal_OS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. Irregularity is estimated as Lv = <font color=\"red\">" + Calc_lv(spike_time).toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/oshist/hist.html')>";
+    document.getElementById("optimal_OS1").innerHTML = optimal_binsize.toFixed(2);
+    document.getElementById("optimal_OS2").innerHTML = Calc_lv(spike_time).toFixed(2);
 }
+
 
 /////////////////////////////
 //lv
@@ -472,7 +473,7 @@ function density(spike_time, div_id) {
 
     drawDensity(opty, "ShimazakiKernel", "darkorange");
     SpikeRaster(spike_time, "raster3");
-    document.getElementById('optimal_ShimazakiKernel').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sskernel/kernel.html')>";
+    document.getElementById('optimal_ShimazakiKernel').innerHTML=optw.toFixed(2);
 }
 
 function drawDensity(opty, div_id, color) {
@@ -521,7 +522,7 @@ function densityR(spike_time, canvas_id) { //Kernel density estimation with refl
 
     drawDensity(opty, "ShimazakiKernelR", "teal");    
     SpikeRaster(spike_time, "raster4");
-    document.getElementById('optimal_ShimazakiKernelR').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal bandwidth = <font color=\"red\">" + optw.toFixed(2) + "</font>.<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/reflectedkernel/reflectedkernel.html')>";
+    document.getElementById('optimal_ShimazakiKernelR').innerHTML=optw.toFixed(2);
 }
 
 function xaxis() {
@@ -631,7 +632,5 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 	})
 
     SpikeRaster(spike_time, "raster5");
-    document.getElementById('HMMMessage').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;<INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/msHMM/HMM.html')>";
-
 }
 
