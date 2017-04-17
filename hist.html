@@ -17,10 +17,6 @@
 	  google.charts.load('current', {'packages' :['corechart']}); //GoogleChartsが使えるようになる
 	</script>
 
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="jquery.blockUI.js"></script>
-	<script type="text/javascript" src="blockTest.js"></script>
-
 	<script type="text/javascript">
 	  if (window.File && window.FileReader && window.FileList && window.Blob) {
 	  // Great success! All the File APIs are supported.
@@ -47,7 +43,7 @@
 	<div id="contents">
 	<FORM name="data">
 		<font face="Arial Black"><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value=" or, replace it with another sample," onclick="$.blockUI();setTimeout(function(){}, 10000);$.unblockUI();" style="font-size:10pt" id="test"> or, upload your data <INPUT type="file" id="selfile" style="display:none"><INPUT type="button" value="upload" style="font-sizse:10pt" onClick="document.getElementById('selfile').click()"<br>
+		<INPUT type="button" value=" or, replace it with another sample," onclick="ResetData()" style="font-size:10pt" id="test"> or, upload your data <INPUT type="file" id="selfile" style="display:none"><INPUT type="button" value="upload" style="font-sizse:10pt" onClick="document.getElementById('selfile').click()"<br>
 		<script type="text/javascript">
 		  function handleFileSelect(evt) {
 		    var file = evt.target.files;
@@ -60,16 +56,6 @@
 		  }
 		  document.getElementById('selfile').addEventListener('change', handleFileSelect, false);
 		</script>
-		<INPUT type="button" id="dammy" onClick="" style="display:none">
-		<script type="text/javascript">
-		  $('#dammy').click(function() {
-		  $.blockUI();
-		  });
-		  $('#test').click(function() {
-		  //ResetData();
-		  });
-		</script>
-		
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="3" cols="95" font="3" style="font-size:10pt" onChange="Main()"></TEXTAREA><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Please list spike times in increasing order, separated by a comma or a space.<br>
