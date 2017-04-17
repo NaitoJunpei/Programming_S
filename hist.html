@@ -16,7 +16,11 @@
 	<script type="text/javascript">
 	  google.charts.load('current', {'packages' :['corechart']}); //GoogleChartsが使えるようになる
 	</script>
-	
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.blockUI.js"></script>
+	<script type="text/javascript" src="blockTest.js"></script>
+
 	<script type="text/javascript">
 	  if (window.File && window.FileReader && window.FileList && window.Blob) {
 	  // Great success! All the File APIs are supported.
@@ -36,10 +40,14 @@
 	<!-- Header -->
 	<h2>Toolbox: Estimating the firing rate</h2>
 	
-	<!-- Web Application --> 
+	<!-- Web Application -->
+	<div id="wait">
+	  Blocking Test
+	</div>
+	<div id="contents">
 	<FORM name="data">
 		<font face="Arial Black"><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
-		<INPUT type="button" value=" or, replace it with another sample," onclick="ResetData()" style="font-size:10pt"> or, upload your data <INPUT type="file" id="selfile"><br>
+		<INPUT type="button" value=" or, replace it with another sample," onclick="$.blockUI();setTimeout(function(){}, 10000);$.unblockUI();" style="font-size:10pt" id="test"> or, upload your data <INPUT type="file" id="selfile" style="display:none"><INPUT type="button" value="upload" style="font-sizse:10pt" onClick="document.getElementById('selfile').click()"<br>
 		<script type="text/javascript">
 		  function handleFileSelect(evt) {
 		    var file = evt.target.files;
@@ -52,12 +60,23 @@
 		  }
 		  document.getElementById('selfile').addEventListener('change', handleFileSelect, false);
 		</script>
+		<INPUT type="button" id="dammy" onClick="" style="display:none">
+		<script type="text/javascript">
+		  $('#dammy').click(function() {
+		  $.blockUI();
+		  });
+		  $('#test').click(function() {
+		  //ResetData();
+		  });
+		</script>
+		
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;<TEXTAREA name="spikes" rows="3" cols="95" font="3" style="font-size:10pt" onChange="Main()"></TEXTAREA><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Please list spike times in increasing order, separated by a comma or a space.<br>
 		&nbsp;&nbsp;&nbsp;&nbsp;Your data would not leak out, because the computation is carried out by your computer.<br><br>
 		
-		<font face="Arial Black"><strong>2.Estimate the firing rate</strong></font><br>
+		<font face="Arial Black"><strong>2.Estimate the firing rate</strong></font>
+		<INPUT type="button" value="Estimate the rate" onclick="" style="font-size:10pt"><br>
 		&nbsp;&nbsp;&nbsp;&nbsp;(A) Histogram: L2 risk minimization [1]<br>
 		<div id="graph_SS" style="width: 800px; height: 70px"></div>
 		<div id="raster" style="width: 800px; height: 10px"></div>
@@ -94,6 +113,8 @@
 	  [5] Shimokawa T and Shinomoto S (2009) Estimating instantaneous irregularity of neuronal firing. Neural Computation 21: 1931-1951.<br>
 	  [6] Mochizuki Y and Shinomoto S (2014) Analog and digital codes in the brain. Physical Review E 89:022705.
 	  </FONT><BR>
+	</div>
+	
 </div>
 </BODY>
 
