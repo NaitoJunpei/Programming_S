@@ -26,20 +26,18 @@
 	</script>
 	
 	<title>Histogram Optimization</title>
+	<script type="text/javascript" src="Output.js"></script>
 </HEAD>
 
 <BODY onLoad="Initialize()" style="font-family:Optima,Arial">
 
-<div style="width:920">
+<div style="width:920" id="Main">
 		
 		
 	<!-- Header -->
 	<h2>Toolbox: Estimating the firing rate</h2>
 	
 	<!-- Web Application -->
-	<div id="wait">
-	  Blocking Test
-	</div>
 	<div id="contents">
 	<FORM name="data">
 		<font face="Arial Black"><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
@@ -102,6 +100,11 @@
 	</div>
 	
 </div>
+<div style="width:920" id="Output">
+  <!-- 出力用の場所 data sheetボタンを押した時だけ見える -->
+  <INPUT type="button" value="back" onclick="backMain()" style="font-size:10pt"><br>
+  <p id="OutputMessage" style=font-size:10pt></p>
+  <INPUT type="button" value="back" onclick="backMain()" style="font-size:10pt"><br>
 </BODY>
 
 </html> 

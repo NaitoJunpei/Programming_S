@@ -322,7 +322,7 @@ function DrawGraphSS( spike_time, optimal_binsize ){
     DrawHist(spike_time, optimal_binsize, "graph_SS", "mediumblue");
     SpikeRaster(spike_time, "raster");
 
-    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sshist/hist.html')>";
+    document.getElementById('optimal_SS').innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;Optimal binsize = <font color=\"red\">" + optimal_binsize.toFixed(2) + "</font>. <INPUT type='button' value = 'data sheet' onClick='OutputPloto()'><INPUT type='button' value = 'more detail' onclick=window.open('http://www.ton.scphys.kyoto-u.ac.jp/~shino/toolbox/sshist/hist.html')>";
 	
 }
 
