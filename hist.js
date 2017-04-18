@@ -43,7 +43,7 @@ function GenerateRandomSpikes( ) {
 //////////////////////////////////////////////////
 var Base=30.0;
 var Amplitude=10.0;
-var TIME=10.0;
+var TIME=6.0;
 var Period=[2.0/Math.PI,1.41421356/Math.PI,0.8989898/Math.PI];
 
 function Rate( index, t ){
@@ -139,7 +139,7 @@ function GenerateSpikes(index, kappa, spike_time){
 }
 
 function Initialize() {
-    document.data.spikes.value = "0.017 0.058 0.119 0.191 0.194 0.259 0.289 0.305 0.346 0.355 0.481 0.537 0.566 0.621 0.642 0.703 0.738 0.8 1.035 1.059 1.097 1.158 1.297 1.339 1.475 1.495 1.603 1.634 1.663 1.771 1.789 1.801 1.835 1.887 1.91 1.914 1.975 2 2.023 2.041 2.059 2.081 2.112 2.155 2.166 2.195 2.214 2.242 2.258 2.264 2.329 2.343 2.354 2.384 2.395 2.411 2.438 2.45 2.47 2.485 2.503 2.529 2.56 2.582 2.587 2.596 2.6 2.623 2.628 2.642 2.661 2.7 2.71 2.717 2.734 2.738 2.758 2.775 2.775 2.786 2.797 2.809 2.838 2.853 2.861 2.866 2.877 2.906 2.958 2.977 3.012 3.031 3.039 3.086 3.092 3.101 3.121 3.156 3.168 3.189 3.19 3.222 3.254 3.275 3.277 3.329 3.331 3.35 3.386 3.39 3.44 3.455 3.518 3.519 3.551 3.617 3.648 3.651 3.668 3.705 3.715 3.793 3.808 3.832 3.858 3.889 3.898 3.969 4.053 4.144 4.194 4.407 4.523 4.578 4.643 4.676 4.705 4.803 4.917 5.022 5.056 5.095 5.127 5.164 5.244 5.286 5.339 5.401 5.431 5.485 5.491 5.615 5.636 5.65 5.658 5.687 5.736 5.746 5.797 5.854 5.915 5.933 5.96 6.075 6.152 6.179 6.206 6.27 6.288 6.441 6.489 6.505 6.512 6.53 6.556 6.583 6.614 6.64 6.652 6.689 6.733 6.79 6.795 6.799 6.864 6.886 6.891 6.894 6.917 6.941 7.007 7.02 7.027 7.061 7.081 7.089 7.112 7.128 7.145 7.152 7.177 7.183 7.213 7.221 7.227 7.243 7.26 7.263 7.298 7.333 7.351 7.373 7.38 7.4 7.419 7.435 7.475 7.497 7.512 7.529 7.54 7.582 7.589 7.59 7.707 7.733 7.805 7.815 7.845 7.911 7.939 7.963 8.021 8.037 8.052 8.059 8.083 8.119 8.159 8.185 8.264 8.295 8.383 8.499 8.605 8.689 8.724 8.789 8.855 8.874 8.901 8.909 8.919 9.004 9.047 9.065 9.073 9.096 9.115 9.147 9.204 9.228 9.244 9.259 9.294 9.332 9.363 9.401 9.438 9.449 9.463 9.511 9.576 9.581 9.586 9.6 9.628 9.635 9.722 9.725 9.74 9.75 9.781 9.789 9.871 9.905 9.925 9.958";
+    document.data.spikes.value = "0.017 0.068 0.224 0.428 0.502 0.543 0.563 0.638 0.702 0.725 0.749 0.773 0.848 0.884 0.938 0.965 0.985 0.995 1.05 1.058 1.075 1.131 1.15 1.191 1.203 1.223 1.236 1.271 1.32 1.344 1.349 1.379 1.38 1.382 1.417 1.448 1.475 1.499 1.53 1.564 1.577 1.584 1.594 1.602 1.694 1.718 1.728 1.74 1.774 1.777 1.789 1.798 1.806 1.823 1.854 1.902 1.916 1.986 1.991 2.003 2.049 2.084 2.099 2.11 2.131 2.157 2.17 2.224 2.348 2.356 2.38 2.415 2.452 2.48 2.545 2.597 2.622 2.656 2.804 2.926 2.946 2.967 2.979 3.063 3.076 3.11 3.167 3.18 3.222 3.231 3.314 3.345 3.388 3.403 3.422 3.455 3.483 3.546 3.578 3.593 3.627 3.637 3.677 3.707 3.716 3.721 3.827 3.832 3.845 3.847 3.863 3.88 3.897 3.932 3.977 3.989 4.032 4.065 4.072 4.095 4.105 4.122 4.166 4.186 4.195 4.212 4.232 4.25 4.251 4.268 4.289 4.295 4.302 4.303 4.334 4.357 4.372 4.394 4.41 4.415 4.429 4.474 4.488 4.5 4.528 4.536 4.544 4.546 4.566 4.576 4.594 4.598 4.636 4.704 4.721 4.773 4.838 4.9 4.923 4.988 4.99 5.003 5.008 5.018 5.092 5.105 5.122 5.176 5.298 5.327 5.369 5.442 5.511 5.555 5.578 5.61 5.654 5.697 5.771 5.786 5.862 5.899 5.943 5.967 5.998 ";
     document.getElementById("Output").style.display="none";
     Main();
 }
@@ -233,11 +233,8 @@ function Estimate_Rate( spike_time, optimal_binsize, optimal_rate ){
 ///////////////////////////////////////////////
 var x_base=40;
 var width=600;
-var y_raster=10;
-var height_spike=5;
-var y_graph=70;
-var height_graph=60;
-var height_hist=50;
+var height_raster=10;
+var height_graph=70;
 
 function SpikeRaster(spike_time, div_id) {
     google.charts.setOnLoadCallback(
@@ -252,7 +249,7 @@ function SpikeRaster(spike_time, div_id) {
 		    left: x_base,
 		    top: 0,
 		    width: width,
-		    height: 8},
+		    height: height_raster},
 		hAxis: {
 		    gridlines: {color: 'transparent'},
 		    baselineColor: 'transparent',
@@ -304,14 +301,15 @@ function DrawHist(spike_time, optimal_binsize, div_id, color) {
 		    textPosition: "none",
 		    minValue: 0
 		},
+		
 		colors: [color], //グラフの色の設定
-		bar: {groupWidth: "100%"}, //おまじない
 		ticks: [onset],
 		histogram: {bucketSize: optimal_binsize,
+			    hideBucketItems: true,
 			    //maxNumBuckets: optimal_binnum + 1,
 			    minNumBuckets: optimal_binnum,
 			    minValue: onset,
-			    }
+			   },
 	    }
 	    var chart = new google.visualization.Histogram(document.getElementById(div_id));
 	    chart.draw(data, options);
@@ -526,7 +524,7 @@ function densityR(spike_time, canvas_id) { //Kernel density estimation with refl
     drawDensity(opty, "ShimazakiKernelR", "teal");    
     SpikeRaster(spike_time, "raster4");
     document.getElementById('optimal_ShimazakiKernelR').innerHTML=optw.toFixed(2);
-    document.getElementById('outputSSKernelR').addEventListener("click", function() {OutputKernelDensityR(optw, opty)});
+    document.getElementById('outputSSKernelR').addEventListener("click", function() {OutputKernelDensity(optw, opty)});
 }
 
 function xaxis() {
@@ -605,6 +603,8 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 	
     }
     ///arr.push([Math.max.apply(null, spike_time), rate_hmm[rate_hmm.length - 1][1]]);
+    var max = Math.max.apply(null, rate_hmm.map(function(x) { return x[1]; }));
+    console.log(max);
 
     google.charts.setOnLoadCallback(
 	function() {
@@ -629,7 +629,8 @@ function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
 		    gridlines: {color: 'transparent'},
 		    baselineColor: 'transparent',
 		    textPosition: 'none',
-		    minValue: 0},
+		    minValue: 0,
+		    maxValue: max * 1.1},
 		colors: ["salmon"]}
 	    var chart = new google.visualization.AreaChart(document.getElementById("HMM"));
 	    chart.draw(data, options);

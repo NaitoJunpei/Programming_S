@@ -52,15 +52,21 @@ function OutputKernelDensity(optw, opty) {
     var t = xaxis();
     var results = "";
 
-    results += "工事中<br>";
-    OutputResults(results);
-}
+    results += "Optimal Bandwidth: " + optw.toPrecision(6) + "<br><br>";
+    results += "Data of the optimized kernel density estimate<br>";
 
-function OutputKernelDensityR(optw, opty) {
-    var t = xaxis();
-    var results = "";
+    results += "<table width=300><tr align=left><td width=150> X-AXIS </td><td width=150> DENSITY</td>";
+    for (var i = 0; i < opty.length; i++) {
+	results += "<tr align=left><td width=150>" + t[i].toPrecision(5) + "</td><td width=150>" + opty[i].toPrecision(5) + "</td>";
+    }
 
-    results += "工事中<br>";
+    results += "</table><br>";
+    results += "Cost Function<br>";
+    results += "<table width=300><tr align=left><td width=150> Bandwidth </td><td width=150> Cost </td>";
+    for (var i = 0; i < C.length; i++) {
+	results += "<tr align=left><td width=150>" + W[i].toPrecision(5) + "</td><td width=150>" + C[i].toPrecision(5) + "</td>";
+    }
+    results += "</table><br>";
     OutputResults(results);
 }
 
