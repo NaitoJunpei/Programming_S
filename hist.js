@@ -316,9 +316,54 @@ function DrawHist(spike_time, optimal_binsize, div_id, color) {
 	});
 }
 
+function DrawHist2(spike_time, optimal_binsize, div_id, color) {
+    var optimal_rate = [];
+    Estimate_Rate(spike_time, optimal_binsize, optimal_rate);
+    google.charts.setOnLoadCallback(
+	function() {
+	    var i = 0;
+	    var arr = [['', '']].concat(optimal_rate.map(function(x) { console.log(i); return [i++, x];}));
+	    console.log(arr);
+
+	    var data = google.visualization.arrayToDataTable(arr); //データとして利用できる形に
+
+	    var options = {
+		legend: 'none',
+		chartArea: {
+		    left: x_base,
+		    top: 1,
+		    width: width,
+		    height: height_graph,
+		    backgroundColor: {
+			stroke: "black",
+			strokeWidth: 1}},
+		hAxis: {
+		    gridlines: {color: "transparent"},
+		    baselineColor: "transparent",
+		    textPosition: "none",
+		    //minValue: onset,
+		},
+		vAxis: {
+		    gridlines: {color: "transparent"},
+		    baselineColor: "transparent",
+		    textPosition: "none",
+		    minValue: 0,
+		},
+		orientation: "horizontal",
+		colors: [color],
+		bar: {groupWidth: "100%"}
+	    }
+	    
+	    var chart = new google.visualization.BarChart(document.getElementById(div_id));
+	    chart.draw(data, options);
+	});
+}
+
+    
+
 function DrawGraphSS( spike_time, optimal_binsize ){
 	
-    DrawHist(spike_time, optimal_binsize, "graph_SS", "mediumblue");
+    DrawHist2(spike_time, optimal_binsize, "graph_SS", "mediumblue");
     SpikeRaster(spike_time, "raster");
     document.getElementById('optimal_SS').innerHTML=optimal_binsize.toFixed(2);
     document.getElementById('outputSS').addEventListener("click", function() {OutputSS(spike_time, optimal_binsize)});
@@ -326,7 +371,7 @@ function DrawGraphSS( spike_time, optimal_binsize ){
 }
 
 function DrawGraphOS(spike_time, optimal_binsize) {
-    DrawHist(spike_time, optimal_binsize, "graph_OS", "mediumaquamarine");
+    DrawHist2(spike_time, optimal_binsize, "graph_OS", "mediumaquamarine");
     SpikeRaster(spike_time, "raster2");
     document.getElementById("optimal_OS1").innerHTML = optimal_binsize.toFixed(2);
     document.getElementById("optimal_OS2").innerHTML = Calc_lv(spike_time).toFixed(2);
