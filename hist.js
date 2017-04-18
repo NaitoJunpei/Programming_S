@@ -476,6 +476,7 @@ function density(spike_time, div_id) {
     drawDensity(opty, "ShimazakiKernel", "darkorange");
     SpikeRaster(spike_time, "raster3");
     document.getElementById('optimal_ShimazakiKernel').innerHTML=optw.toFixed(2);
+    document.getElementById('outputSSKernel').addEventListener("click", function() {OutputKernelDensity(optw, opty)});
 }
 
 function drawDensity(opty, div_id, color) {
@@ -525,6 +526,7 @@ function densityR(spike_time, canvas_id) { //Kernel density estimation with refl
     drawDensity(opty, "ShimazakiKernelR", "teal");    
     SpikeRaster(spike_time, "raster4");
     document.getElementById('optimal_ShimazakiKernelR').innerHTML=optw.toFixed(2);
+    document.getElementById('outputSSKernelR').addEventListener("click", function() {OutputKernelDensityR(optw, opty)});
 }
 
 function xaxis() {

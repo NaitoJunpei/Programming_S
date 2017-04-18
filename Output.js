@@ -48,9 +48,21 @@ function OutputHist(spike_time, optimal_binsize, results) {
     OutputResults(results);
 }
 
-function
+function OutputKernelDensity(optw, opty) {
+    var t = xaxis();
+    var results = "";
 
+    results += "工事中<br>";
+    OutputResults(results);
+}
 
+function OutputKernelDensityR(optw, opty) {
+    var t = xaxis();
+    var results = "";
+
+    results += "工事中<br>";
+    OutputResults(results);
+}
 
 function OutputHMM(spike_time, rate_hmm) {
     var max = Math.max.apply(null, spike_time);
