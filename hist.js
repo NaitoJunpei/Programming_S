@@ -207,6 +207,9 @@ function Main(){
     var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
     DrawGraphHMM(spike_time, rate_hmm);
 
+    //Bayesian Rate Estimation
+    Bayesian(spike_time, "Bayes", "blue");
+
 }
 
 
