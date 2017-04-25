@@ -246,8 +246,7 @@ function SpikeRaster(spike_time, div_id) {
 	    var data = google.visualization.arrayToDataTable(arr);
 	    var options = {
 		legend: 'none',
-		bar: {
-		    groupWidth: 1},
+		bar: {groupWidth: "100"},
 		chartArea: {
 		    left: x_base,
 		    top: 0,

@@ -86,3 +86,7 @@ function OutputHMM(spike_time, rate_hmm) {
     }
     OutputResults(results);
 }
+
+function OutputBayes() {
+    //中身はSulabApplet1で書いている
+}

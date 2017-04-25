@@ -125,6 +125,20 @@ function Bayesian(spike_time, div_id, color) {
 	    })
     }
 
+    function OutputBayes(t, kalman) {
+	var results = "";
+	results += "Bayesian rate estimation<br>";
+	results += "<table width = 300><tr align=left><td width=150>X-Axis</td><td width=150>Y-Axis</td>";
+	results += "<tr align=left><td width=150>" + ((t[0] + t[1]) / 2) + "</td><td width=150>0</td>";
+	
+	for (var i = 0; i < t.length - 1; i++) {
+	    results += "<tr align=left><td width=150>" + ((t[i] + t[i + 1]) / 2) + "</td><td width=150>" + kalman[0][i] + "</td>";
+	}
+	results += "<tr align=left><td width=150>" + ((t[t.length - 2] + t[t.length - 1]) / 2) + "</td><td width=150>0</td>";
+	results += "</table><br>";
+	OutputResults(results);
+    }
+    //内部函数たち　ここまで
 
 
     var data_length = spike_time.length;
@@ -152,5 +166,9 @@ function Bayesian(spike_time, div_id, color) {
     //グラフの描画
     drawKalman(spike_time, kalman, div_id, color);
     SpikeRaster(spike_time, "raster6");
+
+    //Output
+    document.getElementById("outputBayes").addEventListener("click", function() {
+	OutputBayes(spike_time, kalman);});
 
 }
