@@ -151,6 +151,6 @@ function Bayesian(spike_time, div_id, color) {
 
     //グラフの描画
     drawKalman(spike_time, kalman, div_id, color);
-
+    SpikeRaster(spike_time, "raster6");
 
 }
