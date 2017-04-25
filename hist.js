@@ -235,8 +235,8 @@ function Estimate_Rate( spike_time, optimal_binsize, optimal_rate ){
 //Graph
 ///////////////////////////////////////////////
 var x_base=40;
-var width=600;
-var height_raster=10;
+var width=800;
+var height_raster=5;
 var height_graph=70;
 
 function SpikeRaster(spike_time, div_id) {
@@ -247,7 +247,7 @@ function SpikeRaster(spike_time, div_id) {
 	    var options = {
 		legend: 'none',
 		bar: {
-		    groupWidth: 2},
+		    groupWidth: 1},
 		chartArea: {
 		    left: x_base,
 		    top: 0,
