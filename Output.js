@@ -3,16 +3,23 @@ function backMain() {
     document.getElementById("Main").style.display='block';
 }
 
-function OutputResults(message) {
+function OutputResults(message, filemessage) {
     //document.getElementById("Main").style.display="none";
     //document.getElementById("Output").style.display="block";
     //document.getElementById("OutputMessage").innerHTML=message;
 
-    var Subwin = window.open("", "DataSheet", "");
+    //var myBlob = new Blob([message], {type: 'text/html'});
+    //var url = URL.createObjectURL(myBlob);
+    //document.getElementById("OutputMessage").innerHTML="<a href=" + url + " download=test.txt>test</a>";
+    console.log("debug");
+    var Subwin = window.open("", "_blank", "");
     Subwin.document.writeln("<html><style type='text/css'> body, td {font-size: 10pt}</style><body>");
+    Subwin.document.writeln("<div id='Output'></div>");
+    Subwin.document.writeln("<script type='text/javascript'>var myBlob = new Blob([\"" + filemessage + "\"], {type: 'text/html'}); var url = URL.createObjectURL(myBlob); document.getElementById('Output').innerHTML='<a href=' + url + ' download=datasheet.csv>download as csv</a>';</script>");
     Subwin.document.writeln(message);
-    Subwin.document.writeln("</body></html>");
-    
+    Subwin.document.writeln("</html>");
+
+    //var Subwin2 = window.open(url, "_blank", "");
 }
 
 function OutputSS(spike_time, optimal_binsize) {
@@ -38,17 +45,23 @@ function OutputHist(spike_time, optimal_binsize, results) {
     var min = Math.min.apply(null, spike_time);
     var onset = min - 0.001 * (max - min);
     var offset = max + 0.001 * (max - min);
+    var filemessage = "X-AXIS,Y-AXIS\\n";
     
     var rate = [];
     Estimate_Rate(spike_time, optimal_binsize, rate);
     results += "<tr><td>" + onset.toFixed(2) + "</td><td>0</td>";
     for(var i = 0; i < rate.length; i++) {
 	results += "<tr><td>" + (onset + i * optimal_binsize).toFixed(2) + "</td><td>" + rate[i].toFixed(2) + "</td>";
+	filemessage += (onset + i * optimal_binsize).toFixed(2) + "," + rate[i].toFixed(2) + "\\n";
 	results += "<tr><td>" + (onset + (i + 1) * optimal_binsize).toFixed(2) + "</td><td>" + rate[i].toFixed(2) + "</td>";
+	filemessage += (onset + (i + 1) * optimal_binsize).toFixed(2) + "," + rate[i].toFixed(2) + "\\n";
+	
     }
     results += "<tr><td>" + (onset + rate.length * optimal_binsize).toFixed(2) + "</td><td>0</td>";
+    filemessage += (onset + rate.length * optimal_binsize).toFixed(2) + ",0\\n";
     results += "</table><br>"
-    OutputResults(results);
+    console.log(filemessage);
+    OutputResults(results, filemessage);
 }
 
 function OutputKernelDensity(optw, opty) {
