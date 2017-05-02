@@ -4,9 +4,15 @@ function backMain() {
 }
 
 function OutputResults(message) {
-    document.getElementById("Main").style.display="none";
-    document.getElementById("Output").style.display="block";
-    document.getElementById("OutputMessage").innerHTML=message;
+    //document.getElementById("Main").style.display="none";
+    //document.getElementById("Output").style.display="block";
+    //document.getElementById("OutputMessage").innerHTML=message;
+
+    var Subwin = window.open("", "DataSheet", "");
+    Subwin.document.writeln("<html><style type='text/css'> body, td {font-size: 10pt}</style><body>");
+    Subwin.document.writeln(message);
+    Subwin.document.writeln("</body></html>");
+    
 }
 
 function OutputSS(spike_time, optimal_binsize) {
