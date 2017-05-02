@@ -205,10 +205,10 @@ function Main(){
     
     //Hidden Markov Model
     // bin width in second
-    var bin_width = (spike_time[spike_time.length - 1] - spike_time[0]) / (10 * (spike_time.length - 1));
-    if (bin_width < 0.05) {
-	bin_width = 0.05;
-    }
+    var bin_width = (spike_time[spike_time.length - 1] - spike_time[0]) / spike_time.length;
+    //if (bin_width < 0.05) {
+    //bin_width = 0.05;
+    //}
     console.log(bin_width);
     var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
     DrawGraphHMM(spike_time, rate_hmm);

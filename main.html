@@ -9,10 +9,10 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <META name="GENERATOR" content="IBM WebSphere Studio Homepage Builder Version 13.0.6.0 for Windows">
 <META http-equiv="Content-Style-Type" content="text/css">
-<link rel="stylesheet" href="hist.css" type="text/css">
+<link rel="stylesheet" href="main.css" type="text/css">
 	<script type="text/javascript" src="mt.js"></script>
 	<script type="text/javascript" src="hmm_funcs.js"></script>
-	<script type="text/javascript" src="hist.js"></script>
+	<script type="text/javascript" src="main.js"></script>
 	<script type="text/javascript" src="SulabApplet1.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
@@ -37,9 +37,13 @@
 		
 		
 	<!-- Header -->
-	<h2>Toolbox: Estimating the firing rate</h2>
+	<h2>Toolbox: Application programs for constructing time histograms</h2>
 	
 	<!-- Web Application -->
+	<div style="width:800; background-color:#FFFFCC; margin-left:10px; margin-bottom:10px">
+	  Here, you may obtain the best histogram, kernel density estimation, Bayesian estimator, and Hidden Markov model for a given series of event times. Paste or upload the event times listed in increasing order, separated by a comma or a space. Your data would not leak out, because the computation is carried out by your computer. The theoretical backgrounds for optimizing the estimators can be found in the references.
+	</div>
+	
 	<div id="contents">
 	<FORM name="data">
 		<font face="Arial Black"><strong>1. You can paste your data here, </strong></font>&nbsp;&nbsp;
@@ -131,8 +135,17 @@
 [3] Shimazaki H and Shinomoto S (2010) Kernel bandwidth optimization in spike rate estimation. J. Computational Neuroscience 29:171-182.<br>
 	  [4] Koyama S and Shinomoto S (2005) Empirical Bayes interpretations of random point events. J. Phys. A 38:L531-L537.<br>
 	  [5] Shimokawa T and Shinomoto S (2009) Estimating instantaneous irregularity of neuronal firing. Neural Computation 21: 1931-1951.<br>
-	  [6] Mochizuki Y and Shinomoto S (2014) Analog and digital codes in the brain. Physical Review E 89:022705.
-	  </FONT><BR>
+	  [6] Mochizuki Y and Shinomoto S (2014) Analog and digital codes in the brain. Physical Review E 89:022705.<br><br>
+
+	  Review article can be downloaded: Shinomoto S (2010) Estimating the firing rate. in Analysis of Parallel Spike Train Data (eds. S.Gruen and S. Rotter) (Springer, New York).<br>
+	  For assistance, contact Shigeru Shinomoto, who directed this project. Individual programs were contributed by Hideaki Shimazaki, Takahiro Omi, Takeaki Shimokawa, Yasuhiro Mochizuki, Junpei Naito, and Kazuki Nakamura.<br><br>
+
+	  Current version: 1.0 (2017/05/17)<br><br>
+
+	  Matlab and python codes will be provided shortly.
+	  
+	</FONT><BR>
+	
 	</div>
 	
 </div>
