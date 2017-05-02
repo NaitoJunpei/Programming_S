@@ -195,20 +195,27 @@ function Main(){
     //OmiShinomoto
     optimal_binsize_g=OS(spike_time);
     DrawGraphOS(spike_time, optimal_binsize_g);
-
+    
     //Kernel bandwidth optimization
     density(spike_time, "ShimazakiKernel");
-
+    
     //Kernel density estimation with reflection boundary
     densityR(spike_time, "ShimazakiKernelR");
-
+    
+    
     //Hidden Markov Model
-    var bin_width = 0.05; // bin width in second
+    // bin width in second
+    var bin_width = (spike_time[spike_time.length - 1] - spike_time[0]) / (10 * (spike_time.length - 1));
+    if (bin_width < 0.05) {
+	bin_width = 0.05;
+    }
+    console.log(bin_width);
     var rate_hmm = get_hmm_ratefunc(spike_time, bin_width, rate_hmm);
     DrawGraphHMM(spike_time, rate_hmm);
-
+    
     //Bayesian Rate Estimation
     Bayesian(spike_time, "Bayes", "blue");
+    
 
 }
 
@@ -324,8 +331,7 @@ function DrawHist2(spike_time, optimal_binsize, div_id, color) {
     google.charts.setOnLoadCallback(
 	function() {
 	    var i = 0;
-	    var arr = [['', '']].concat(optimal_rate.map(function(x) { console.log(i); return [i++, x];}));
-	    console.log(arr);
+	    var arr = [['', '']].concat(optimal_rate.map(function(x) { return [i++, x];}));
 
 	    var data = google.visualization.arrayToDataTable(arr); //データとして利用できる形に
 
@@ -588,10 +594,15 @@ function kernel(spike_time, w) {
     var y = new Array(K);
 
     for (var i = 0; i < K; i++) {
-	y[i] = 0;
+	//y[i] = 0;
+	temp = 0;
 	for (var j = 0; j < spike_time.length; j++) {
-	    y[i] = y[i] + Gauss(x[i] - spike_time[j], w) / spike_time.length;
+	    diff = x[i] - spike_time[j];
+	    if(Math.abs(diff) < 5 * w) {
+		temp += Gauss(diff, w) / spike_time.length;
+	    }
 	}
+	y[i] = temp;
     }
 
     return y;
@@ -603,12 +614,23 @@ function kernelR(spike_time, w) {
     var y = new Array(K);
 
     for (var i = 0; i < K; i++) {
-	y[i] = 0;
+	//y[i] = 0;
+	var temp = 0;
 	for (var j = 0; j < spike_time.length; j++) {
-	    y[i] = y[i] + Gauss(x[i] - spike_time[j], w) / spike_time.length
-		+ Gauss(x[i] - (2 * DATA_MAX - spike_time[j]), w) / spike_time.length
-		+ Gauss(x[i] - (2 * DATA_MIN - spike_time[j]), w) / spike_time.length;
+	    diff1 = x[i] - spike_time[j];
+	    diff2 = x[i] - (2 * DATA_MAX - spike_time[j]);
+	    diff3 = x[i] - (2 * DATA_MIN - spike_time[j]);
+	    if (Math.abs(diff1) < 5 * w) {
+		temp += Gauss(diff1, w) / spike_time.length;
+	    }
+	    if (Math.abs(diff2) < 5 * w) {
+		temp += Gauss(diff2, w) / spike_time.length;
+	    }
+	    if (Math.abs(diff3) < 5 * w) {
+		temp += Gauss(diff3, w) / spike_time.length;
+	    }
 	}
+	y[i] = temp;
     }
     
     return y;
@@ -637,25 +659,24 @@ function Gauss(x, w) {
 //////Hidden Markov Model//////
 function DrawGraphHMM(spike_time, rate_hmm, bin_width) {
     // 真ん中でグラフの高さを変えたい
-    ///var arr = [['', '']];
-    ///arr.push([0, rate_hmm[0][1]])
+    var arr = [['', '']];
+    arr.push([0, rate_hmm[0][1]])
     for (var i = 0; i < rate_hmm.length - 1; i++) {
 	if (rate_hmm[i][1] != rate_hmm[i + 1][1]) { //値が変わったら
 	    mid = (rate_hmm[i][0] + rate_hmm[i + 1][0]) / 2; //真ん中の値を出して
-	    rate_hmm.splice(i + 1, 0, [mid, rate_hmm[i][1]], [mid, rate_hmm[i + 1][1]]); //高さを変える
-	    i += 2; //加えたデータは飛ばさないと大変なことに
-	    ///arr.push([mid, rate_hmm[i][1]]);
-	    ///arr.push([mid, rate_hmm[i + 1][1]]);
+	    ///rate_hmm.splice(i + 1, 0, [mid, rate_hmm[i][1]], [mid, rate_hmm[i + 1][1]]); //高さを変える
+	    ///i += 2; //加えたデータは飛ばさないと大変なことに
+	    arr.push([mid, rate_hmm[i][1]]);
+	    arr.push([mid, rate_hmm[i + 1][1]]);
 	}
 	
     }
-    ///arr.push([Math.max.apply(null, spike_time), rate_hmm[rate_hmm.length - 1][1]]);
+    arr.push([rate_hmm[rate_hmm.length - 1][0], rate_hmm[rate_hmm.length - 1][1]]);
     var max = Math.max.apply(null, rate_hmm.map(function(x) { return x[1]; }));
-    console.log(max);
 
     google.charts.setOnLoadCallback(
 	function() {
-	    var arr = [['', '']].concat(rate_hmm);
+	    //var arr = [['', '']].concat(rate_hmm);
 	    var data = google.visualization.arrayToDataTable(arr);
 	    var options = {
 		legend: 'none',

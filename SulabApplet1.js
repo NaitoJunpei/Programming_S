@@ -47,7 +47,6 @@ function Bayesian(spike_time, div_id, color) {
 	EL[0][0] = (A + Math.sqrt(A * A + 4 * IVL)) / 2;
 	VL[0][0] = 1 / (1 / IVL + 1 / (Math.pow(EL[0][0], 2)));
 
-	console.log(t);
 
 	var EL_N = [];
 	var VL_N = [];
@@ -75,8 +74,6 @@ function Bayesian(spike_time, div_id, color) {
 	    VL_N[i] = VL[0][i] + H * H * (VL_N[i + 1] - VL[1][i]);
 	    COVL_N[i] = H * VL_N[i + 1];
 	}
-	console.log("kalman");
-	console.log(EL[0][0]);
 	return [EL_N, VL_N, COVL_N];
     }
 
@@ -118,9 +115,6 @@ function Bayesian(spike_time, div_id, color) {
 		      colors: [color]
 		    }
 		var chart = new google.visualization.AreaChart(document.getElementById(div_id));
-		console.log("Bayes");
-		console.log(arr);
-		console.log(kalman);
 		chart.draw(data, options);
 	    })
     }
@@ -128,13 +122,13 @@ function Bayesian(spike_time, div_id, color) {
     function OutputBayes(t, kalman) {
 	var results = "";
 	results += "Bayesian rate estimation<br>";
-	results += "<table width = 300><tr align=left><td width=150>X-Axis</td><td width=150>Y-Axis</td>";
-	results += "<tr align=left><td width=150>" + ((t[0] + t[1]) / 2) + "</td><td width=150>0</td>";
+	results += "<table><tr><td>X-Axis</td><td>Y-Axis</td>";
+	results += "<tr><td>" + ((t[0] + t[1]) / 2).toPrecision(4) + "</td><td>0</td>";
 	
 	for (var i = 0; i < t.length - 1; i++) {
-	    results += "<tr align=left><td width=150>" + ((t[i] + t[i + 1]) / 2) + "</td><td width=150>" + kalman[0][i] + "</td>";
+	    results += "<tr><td>" + ((t[i] + t[i + 1]) / 2).toPrecision(4) + "</td><td>" + kalman[0][i].toPrecision(4) + "</td>";
 	}
-	results += "<tr align=left><td width=150>" + ((t[t.length - 2] + t[t.length - 1]) / 2) + "</td><td width=150>0</td>";
+	results += "<tr><td>" + ((t[t.length - 2] + t[t.length - 1]) / 2).toPrecision(4) + "</td><td>0</td>";
 	results += "</table><br>";
 	OutputResults(results);
     }

@@ -25,3 +25,15 @@ TEXTAREA {
 Myleft {
     margin-left: 40px;
 }
+
+table {
+    width: 300
+}
+
+tr {
+    align: "left"
+}
+
+td {
+    width: 150
+}
