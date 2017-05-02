@@ -124,13 +124,16 @@ function Bayesian(spike_time, div_id, color) {
 	results += "Bayesian rate estimation<br>";
 	results += "<table><tr><td>X-Axis</td><td>Y-Axis</td>";
 	results += "<tr><td>" + ((t[0] + t[1]) / 2).toPrecision(4) + "</td><td>0</td>";
+	var filemessage = "X-AXIS,Y-AXIS\\n";
 	
 	for (var i = 0; i < t.length - 1; i++) {
 	    results += "<tr><td>" + ((t[i] + t[i + 1]) / 2).toPrecision(4) + "</td><td>" + kalman[0][i].toPrecision(4) + "</td>";
+	    filemessage += ((t[i] + t[i + 1]) / 2).toPrecision(4) + "," + kalman[0][i].toPrecision(4) + "\\n";
 	}
 	results += "<tr><td>" + ((t[t.length - 2] + t[t.length - 1]) / 2).toPrecision(4) + "</td><td>0</td>";
 	results += "</table><br>";
-	OutputResults(results);
+	filemessage += ((t[t.length - 2] + t[t.length - 1]) / 2).toPrecision(4) + ",0\\n";
+	OutputResults(results, filemessage);
     }
     //内部函数たち　ここまで
 
