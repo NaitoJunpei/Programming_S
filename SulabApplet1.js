@@ -10,6 +10,8 @@ function Bayesian(spike_time, div_id, color) {
 	for (var j = 0; j < 100; j++) {
 	    beta = beta_new;
 	    kalman = KalmanFilter(t, beta);
+
+	    beta_new = 0;
 	    t0 = 0;
 
 	    for(var i = 0; i < N - 1; i++) {
@@ -156,7 +158,7 @@ function Bayesian(spike_time, div_id, color) {
     
     //EMアルゴリズムを使ってハイパーパラメータ決定
     var beta = EMmethod(ISI, beta0);
-    
+
     //決定したBetaについてKalmanフィルターを使用
     var kalman = KalmanFilter(ISI, beta);
 
