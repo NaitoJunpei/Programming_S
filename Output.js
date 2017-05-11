@@ -12,7 +12,7 @@ function OutputResults(message, filemessage) {
     //var url = URL.createObjectURL(myBlob);
     //document.getElementById("OutputMessage").innerHTML="<a href=" + url + " download=test.txt>test</a>";
 
-    var Subwin = window.open("./", "DataSheet", "");
+    var Subwin = window.open("", null);
     Subwin.document.open();
     Subwin.document.writeln("<html><style type='text/css'> body, td {font-size: 12pt}</style><body>");
     Subwin.document.writeln("<div id='Output'></div>");
